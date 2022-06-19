@@ -5,8 +5,8 @@ import prefix from 'superagent-prefix'
 import {
 	CAR_PARK_ID,
 	ERROR,
-	MESSAGE,
 	STATE_ID,
+	UI_TEXT,
 } from './constants'
 import { Logger } from './Logger'
 import {
@@ -155,7 +155,7 @@ export class CarParkBooker {
 		})
 
 		await this._http_post(endpoint, form_data)
-		Logger.info(MESSAGE.BOOKING_SUCCESS)
+		Logger.info(UI_TEXT.BOOKING_SUCCESS)
 	}
 
 	async _get_lic_plate() {
