@@ -7,6 +7,7 @@ export const HTTP_METHOD = {
 
 export const HTTP_STATUS = {
 	OK: 200,
+	CREATED: 201,
 	NO_CONTENT: 204,
 	BAD_REQUEST: 400,
 	UNAUTHORIZED: 401,
@@ -25,19 +26,34 @@ export const LOG_LEVEL = {
 }
 
 export const DB = {
+	JOBS: 'jobs',
 	LOGS: 'logs',
+	USERS: 'users',
 }
 
-export const MESSAGE = {
+export const UI_TEXT = {
 	BOOKING_SUCCESS: 'Booked successfully',
 	BOOK_NOW: 'Book Now',
+	CREATE_JOB: 'Create Job',
+	DELETE: 'Delete',
+	LOGIN: 'Login',
+	JOB_CREATE_SUCCESS: 'Job created successfully',
+}
+
+export const JOB_STATUS = {
+	EXPIRED: 'Expired',
+	FAILED: 'Failed',
+	SCHEDULED: 'Scheduled',
+	SUCCEEDED: 'Succeeded',
 }
 
 export const ERROR = {
 	BAD_REQUEST: 'Bad Request',
 	INCORRECT_CREDENTIALS: 'The username or password your entered is incorrect',
 	INVALID_FROM_DT: 'Invalid "from" date/time',
+	INVALID_ID: 'Invalid id',
 	INVALID_TO_DT: 'Invalid "to" date/time',
+	JOB_EXISTS: 'Job already exists',
 	METHOD_NOT_ALLOWED: 'HTTP method not allowed',
 	SERVER_ERROR: 'Oops, something went wrong, please try again later.',
 	UNAUTHORIZED: 'Please login to continue',

@@ -1,112 +1,40 @@
 import React from 'react'
-import Head from 'next/head'
-import moment from 'moment'
-import {
-	BaseTextField,
-	ReadOnlyField,
-} from '../components/TextFields'
-import { BaseDropdown } from '../components/Dropdowns'
-import { BaseButton } from '../components/Buttons'
+import { useRouter } from 'next/router'
 import {
 	HTTP_METHOD,
-	MESSAGE,
+	HTTP_STATUS,
 } from '../utils/constants'
 import { useAjaxRequest } from '../hooks/useAjaxRequest'
-import {
-	ErrorAlert,
-	InfoAlert,
-	SuccessAlert,
-} from '../components/Alerts'
+import { ErrorAlert } from '../components/Alerts'
+import { CircularProgress } from '@mui/material'
 
 export default function Page() {
-	const dates = [...Array(14).keys()].map((index) => {
-		const momentObj = moment().add(index + 1, 'days')
-
-		// skip weekend
-		const weekday = momentObj.weekday()
-		if ([0, 6].includes(weekday)) {
-			return null
-		}
-
-		return {
-			label: momentObj.format('YYYY.MM.DD ddd'),
-			value: momentObj.format('YYYY.MM.DD'),
-		}
-	}).filter(elem => !!elem)
-
-	const [username, setUsername] = React.useState('')
-	const [password, setPassword] = React.useState('')
-	const [date, setDate] = React.useState(dates[0].value)
-	const [successMsg, setSuccessMsg] = React.useState('')
-	const [infoMsg, setInfoMsg] = React.useState('')
+	const router = useRouter()
 	const [errMsg, isLoading, sendRequest] = useAjaxRequest()
 
-	const handleSubmit = async () => {
-		setSuccessMsg('')
-		setInfoMsg('')
-
+	const handleSubmit = React.useCallback(async () => {
 		const request = {
-			url: '/api/booking',
-			method: HTTP_METHOD.POST,
-			data: {
-				username: username,
-				password: password,
-				date: date,
-			},
+			url: '/api/session',
+			method: HTTP_METHOD.GET,
 		}
 
 		await sendRequest(request, (res) => {
-			if (res.data === MESSAGE.BOOKING_SUCCESS) {
-				setSuccessMsg(res.data)
+			if (res.status === HTTP_STATUS.OK) {
+				router.push('/jobs')
 			} else {
-				setInfoMsg(res.data)
+				router.push('/login')
 			}
 		})
-	}
+	}, [router, sendRequest])
+
+	React.useEffect(() => {
+		handleSubmit()
+	}, [handleSubmit])
 
 	return (
 		<>
-			<Head>
-				<title>{process.env.NEXT_PUBLIC_APP_TITLE}</title>
-				<link rel='icon' href='/favicon.ico' />
-			</Head>
-
+			{isLoading && <CircularProgress />}
 			{errMsg && <ErrorAlert>{errMsg}</ErrorAlert>}
-			{infoMsg && <InfoAlert>{infoMsg}</InfoAlert>}
-			{successMsg && <SuccessAlert>{successMsg}</SuccessAlert>}
-
-			<BaseTextField
-				label='Username'
-				value={username}
-				onChange={setUsername}
-			/>
-			<BaseTextField
-				type='password'
-				label='Password'
-				value={password}
-				onChange={setPassword}
-			/>
-			<BaseDropdown
-				label='Date'
-				value={date}
-				onChange={setDate}
-				options={dates}
-			/>
-			<ReadOnlyField
-				label='From'
-				value='07:00:00'
-			/>
-			<ReadOnlyField
-				label='To'
-				value='19:00:00'
-			/>
-			<BaseButton
-				variant='contained'
-				onClick={handleSubmit}
-				loading={isLoading}
-			>
-				{MESSAGE.BOOK_NOW}
-			</BaseButton>
 		</>
 	)
 }

@@ -21,4 +21,15 @@ export class MongoHelper {
 			db: this.cached_db,
 		}
 	}
+
+	static convertMongoIdToStr(obj) {
+		if (!!obj && Array.isArray(obj)) {
+			obj = obj.map(doc => {
+				doc._id = doc._id = doc._id.toString()
+				return doc
+			})
+		}
+
+		return obj
+	}
 }

@@ -64,3 +64,9 @@ export class ValidationError extends Error {
 		this.status = HTTP_STATUS.BAD_REQUEST
 	}
 }
+
+export class ExpiredJobError extends Error {
+	constructor() {
+		super('Job expired')
+	}
+}

@@ -67,7 +67,7 @@ export class CarParkBooker {
 		const html_string = await this._http_post(endpoint, body)
 		const $ = this._convert_str_to_doc(html_string)
 		const title = $('title').html()
-		if (title.startsWith('Login')){
+		if (title.startsWith('Login')) {
 			throw new HttpUnauthorizedError(ERROR.INCORRECT_CREDENTIALS)
 		}
 	}
@@ -113,7 +113,7 @@ export class CarParkBooker {
 		const $ = this._convert_str_to_doc(html_string)
 		const error = $('.validation-summary-errors').text()
 
-		if(error.includes('overlapping')){
+		if (error.includes('overlapping')) {
 			throw new RepeatedBookingError(error)
 		}
 

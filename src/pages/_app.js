@@ -28,7 +28,7 @@ export const AppWrapper = (props) => {
 				gap={2}
 				p={2}
 				sx={{
-					maxWidth: 400,
+					maxWidth: 600,
 					margin: 'auto',
 				}}
 			>

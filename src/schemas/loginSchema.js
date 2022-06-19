@@ -1,6 +1,6 @@
-export const bookingRequestSchema = {
+export const loginSchema = {
 	type: 'object',
-	minProperties: 3,
+	minProperties: 2,
 	additionalProperties: false,
 	properties: {
 		username: {
@@ -8,10 +8,6 @@ export const bookingRequestSchema = {
 		},
 		password: {
 			type: 'string',
-		},
-		date: {
-			type: 'string',
-			pattern: '^[0-9]{4}[.][0-9]{2}[.][0-9]{2}$',
 		},
 	},
 }

@@ -18,7 +18,7 @@ export const AppBar = (props) => {
 				padding: (theme) => theme.spacing(1),
 				paddingLeft: (theme) => theme.spacing(2),
 				paddingRight: (theme) => theme.spacing(2),
-				marginBottom: (theme) => theme.spacing(10),
+				marginBottom: (theme) => theme.spacing(2),
 				height: (theme) => theme.spacing(7),
 				display: 'flex',
 				flexDirection: 'row',

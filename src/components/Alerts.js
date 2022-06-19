@@ -40,11 +40,3 @@ export const SuccessAlert = React.forwardRef((props, ref) => (
 		{...props}
 	/>
 ))
-
-export const InfoAlert = React.forwardRef((props, ref) => (
-	<BaseAlert
-		severity='info'
-		ref={ref}
-		{...props}
-	/>
-))
