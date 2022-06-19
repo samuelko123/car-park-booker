@@ -18,7 +18,7 @@ export class ErrorHandler {
 			message: err.message,
 		})
 
-		res.status(status).send(err.message)
+		res.status(status).send(err.message || ERROR.SERVER_ERROR)
 	}
 }
 
