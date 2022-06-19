@@ -1,0 +1,13 @@
+on:
+  schedule:
+    - cron: '0/30 21-13 * * *'
+
+jobs:
+  scheduled-webhook-call:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Call Webhook API
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://car-park-booker.samuelko123.tk/api/webhook'
+        method: 'POST'
