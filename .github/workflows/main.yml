@@ -1,6 +1,8 @@
 on:
   schedule:
-    - cron: '0/30 21-13 * * *'
+    # run every 30 minutes between 21:00 to 13:00 (UTC)
+    - cron: '0/30 21-23 * * *'
+    - cron: '0/30 0-13 * * *'
 
 jobs:
   scheduled-webhook-call:
