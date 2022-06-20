@@ -67,7 +67,7 @@ export const AppBar = (props) => {
 						sx={{ color: 'inherit' }}
 					/>
 				}
-				{!isLoading &&
+				{!isLoading && router.asPath !== '/login' && router.asPath !== '/' &&
 					<Tooltip title={UI_TEXT.LOGOUT}>
 						<IconButton
 							onClick={handleSubmit}
