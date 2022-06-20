@@ -49,6 +49,7 @@ export const JOB_STATUS = {
 
 export const LIMIT = {
 	MAX_ACTIVE_JOB_COUNT: 6,
+	MAX_JOB_RUN_DELAY_MS: 25 * 60 * 1000,
 }
 
 export const ERROR = {

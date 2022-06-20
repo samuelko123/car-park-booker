@@ -9,6 +9,7 @@ import {
 	HTTP_METHOD,
 	HTTP_STATUS,
 	JOB_STATUS,
+	LIMIT,
 } from '../../utils/constants'
 import { JobDAO } from '../../dao/JobDAO'
 import { CryptoHelper } from '../../utils/CryptoHelper'
@@ -25,7 +26,7 @@ export default async function handler(req, res) {
 
 			Logger.info(`Scheduling ${jobs.length} jobs`)
 			for (const job of jobs) {
-				const delay_ms = Math.random() * 25 * 60 * 1000 // within 25 mins.
+				const delay_ms = Math.random() * LIMIT.MAX_JOB_RUN_DELAY_MS
 
 				setTimeout(async () => {
 					const data = {
