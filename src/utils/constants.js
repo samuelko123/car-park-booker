@@ -36,6 +36,7 @@ export const UI_TEXT = {
 	CREATE_JOB: 'Create Job',
 	DELETE: 'Delete',
 	LOGIN: 'Login',
+	LOGOUT: 'Logout',
 	JOB_CREATE_SUCCESS: 'Job created successfully',
 }
 
