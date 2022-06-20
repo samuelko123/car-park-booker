@@ -6,6 +6,7 @@ export class JobDAO {
 	static create = BaseDAO.create
 	static getOneById = BaseDAO.getOneById
 	static get = BaseDAO.get
+	static getCount = BaseDAO.getCount
 	static update = BaseDAO.update
 	static delete = BaseDAO.delete
 }

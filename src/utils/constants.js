@@ -47,6 +47,10 @@ export const JOB_STATUS = {
 	SUCCEEDED: 'Succeeded',
 }
 
+export const LIMIT = {
+	MAX_ACTIVE_JOB_COUNT: 6,
+}
+
 export const ERROR = {
 	BAD_REQUEST: 'Bad Request',
 	INCORRECT_CREDENTIALS: 'The username or password your entered is incorrect',
@@ -55,6 +59,7 @@ export const ERROR = {
 	INVALID_TO_DT: 'Invalid "to" date/time',
 	JOB_EXISTS: 'Job already exists',
 	METHOD_NOT_ALLOWED: 'HTTP method not allowed',
+	REACHED_MAX_ACTIVE_JOB: `You can have up to ${LIMIT.MAX_ACTIVE_JOB_COUNT} active jobs at a time`,
 	SERVER_ERROR: 'Oops, something went wrong, please try again later.',
 	UNAUTHORIZED: 'Please login to continue',
 }

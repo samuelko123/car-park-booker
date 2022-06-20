@@ -66,6 +66,12 @@ export class BaseDAO {
 		return MongoHelper.convertMongoIdToStr(arr)
 	}
 
+	static async getCount(filter) {
+		const { db } = await MongoHelper.connectToDatabase()
+		const count = await db.collection(this.collection_name).count(filter)
+		return count
+	}
+
 	static async update(id, data, options) {
 		const { db } = await MongoHelper.connectToDatabase()
 

@@ -8,6 +8,7 @@ import {
 	HTTP_METHOD,
 	HTTP_STATUS,
 	JOB_STATUS,
+	LIMIT,
 } from '../../../utils/constants'
 import { Validator } from '../../../utils/Validator'
 import { jobSchema } from '../../../schemas/jobSchema'
@@ -56,12 +57,22 @@ export default async function handler(req, res) {
 			}
 
 			// check for duplicate job
-			const existing_jobs = await JobDAO.get({
+			const existing_job_count = await JobDAO.getCount({
 				username: username,
 				date: date,
+				status: JOB_STATUS.ACTIVE,
 			})
-			if (existing_jobs.length > 0) {
+			if (existing_job_count > 0) {
 				throw new HttpBadRequestError(ERROR.JOB_EXISTS)
+			}
+
+			// check max active job
+			const active_job_count = await JobDAO.getCount({
+				username: username,
+				status: JOB_STATUS.ACTIVE,
+			})
+			if (active_job_count >= LIMIT.MAX_ACTIVE_JOB_COUNT) {
+				throw new HttpBadRequestError(ERROR.REACHED_MAX_ACTIVE_JOB)
 			}
 
 			// create job
