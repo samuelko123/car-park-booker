@@ -54,6 +54,9 @@ export const JobList = (props) => {
 							<ListItemText
 								primary={job.date}
 								secondary={`${job.from_time} - ${job.to_time}`}
+								sx={{
+									flex: 0.5,
+								}}
 							/>
 							<ListItemText
 								primary={
@@ -70,14 +73,17 @@ export const JobList = (props) => {
 								}
 								secondary={
 									<>
-										<Typography>
-											Last run: {moment(job.last_run_at).format('DD/MM HH:mm')}
+										<Typography component='span' sx={{ display: 'block' }}>
+											Last run: {job.last_run_at ? moment(job.last_run_at).format('DD/MM HH:mm') : 'N/A'}
 										</Typography>
-										<Typography>
+										<Typography component='span' sx={{ display: 'block' }}>
 											Run count: {job.run_count}
 										</Typography>
 									</>
 								}
+								sx={{
+									flex: 1,
+								}}
 							/>
 							{isLoading && (
 								job._id === jobId ?

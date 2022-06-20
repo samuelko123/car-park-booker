@@ -90,7 +90,8 @@ export default function Page() {
 			<ReadOnlyField
 				fullWidth
 				label='username'
-				value={isFetchingUser ? 'Loading...' : user?.username}
+				value={isFetchingUser ? 'Loading...' : (user?.username || '')}
+				InputLabelProps={{ shrink: true }}
 			/>
 			<BaseDropdown
 				label='Date'

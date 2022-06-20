@@ -81,7 +81,6 @@ export default async function handler(req, res) {
 				username: username,
 				status: JOB_STATUS.ACTIVE,
 				run_count: 0,
-				last_run_at: new Date(0),
 				created_at: new Date(),
 			})
 
