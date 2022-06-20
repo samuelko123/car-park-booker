@@ -58,7 +58,7 @@ export const JobList = (props) => {
 								secondary={
 									<>
 										<Typography>
-											Last run: {moment(job.last_run_at).format('YYYY.MM.DD HH:mm')}
+											Last run: {moment(job.last_run_at).format('DD/MM HH:mm')}
 										</Typography>
 										<Typography>
 											Run count: {job.run_count}

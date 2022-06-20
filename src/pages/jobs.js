@@ -27,7 +27,7 @@ export default function Page() {
 		}
 
 		return {
-			label: momentObj.format('YYYY.MM.DD ddd'),
+			label: momentObj.format('DD/MM ddd'),
 			value: momentObj.format('YYYY.MM.DD'),
 		}
 	}).filter(elem => !!elem)
