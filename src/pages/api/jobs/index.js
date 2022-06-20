@@ -69,7 +69,7 @@ export default async function handler(req, res) {
 				...data,
 				username: username,
 				hash: hash,
-				status: JOB_STATUS.SCHEDULED,
+				status: JOB_STATUS.ACTIVE,
 				run_count: 0,
 				last_run_at: new Date(0),
 				created_at: new Date(),

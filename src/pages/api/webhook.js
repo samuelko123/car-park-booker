@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 		ApiHelper.checkHttpMethod(req, allowed_methods)
 
 		if (req.method === HTTP_METHOD.POST) {
-			const jobs = await JobDAO.get({ status: JOB_STATUS.SCHEDULED })
+			const jobs = await JobDAO.get({ status: JOB_STATUS.ACTIVE })
 
 			Logger.info(`Scheduling ${jobs.length} jobs`)
 			for (const job of jobs) {
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
 						if (err instanceof ExpiredJobError) {
 							data.status = JOB_STATUS.EXPIRED
 						} else if (err instanceof NoBayError) {
-							data.status = JOB_STATUS.SCHEDULED
+							data.status = JOB_STATUS.ACTIVE
 						} else {
 							data.status = JOB_STATUS.FAILED
 						}

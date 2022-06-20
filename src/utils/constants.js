@@ -41,9 +41,9 @@ export const UI_TEXT = {
 }
 
 export const JOB_STATUS = {
+	ACTIVE: 'Active',
 	EXPIRED: 'Expired',
 	FAILED: 'Failed',
-	SCHEDULED: 'Scheduled',
 	SUCCEEDED: 'Succeeded',
 }
 
