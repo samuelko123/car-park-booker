@@ -15,6 +15,8 @@ import {
 	Stack,
 } from '@mui/material'
 import { JobList } from '../components/lists/JobList'
+import { ReadOnlyField } from '../components/TextFields'
+import { useUser } from '../hooks/useUser'
 
 export default function Page() {
 	const dates = [...Array(14).keys()].map((index) => {
@@ -47,6 +49,7 @@ export default function Page() {
 	const [toTime, setToTime] = React.useState('19:00')
 	const [errMsg, isLoading, sendRequest] = useAjaxRequest()
 	const [fetchErrMsg, isFetching, sendFetchingRequest] = useAjaxRequest()
+	const [, isFetchingUser, user] = useUser()
 
 	const handleFetchData = React.useCallback(async () => {
 		const request = {
@@ -83,34 +86,37 @@ export default function Page() {
 
 	return (
 		<Stack gap={2}>
-			<Stack gap={2} sx={{ margin: 'auto' }}>
-				{errMsg && <ErrorAlert>{errMsg}</ErrorAlert>}
-				<BaseDropdown
-					label='Date'
-					value={date}
-					onChange={setDate}
-					options={dates}
-				/>
-				<BaseDropdown
-					label='From'
-					value={fromTime}
-					onChange={setFromTime}
-					options={times}
-				/>
-				<BaseDropdown
-					label='To'
-					value={toTime}
-					onChange={setToTime}
-					options={times}
-				/>
-				<BaseButton
-					variant='contained'
-					onClick={handleSubmit}
-					loading={isLoading}
-				>
-					{UI_TEXT.CREATE_JOB}
-				</BaseButton>
-			</Stack>
+			{errMsg && <ErrorAlert>{errMsg}</ErrorAlert>}
+			<ReadOnlyField
+				fullWidth
+				label='username'
+				value={isFetchingUser ? 'Loading...' : user?.username}
+			/>
+			<BaseDropdown
+				label='Date'
+				value={date}
+				onChange={setDate}
+				options={dates}
+			/>
+			<BaseDropdown
+				label='From'
+				value={fromTime}
+				onChange={setFromTime}
+				options={times}
+			/>
+			<BaseDropdown
+				label='To'
+				value={toTime}
+				onChange={setToTime}
+				options={times}
+			/>
+			<BaseButton
+				variant='contained'
+				onClick={handleSubmit}
+				loading={isLoading}
+			>
+				{UI_TEXT.CREATE_JOB}
+			</BaseButton>
 			{isFetching && <CircularProgress />}
 			{!isFetching &&
 				<Box sx={{ width: '100%' }}>
