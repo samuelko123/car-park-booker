@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import {
+	Chip,
 	CircularProgress,
 	Divider,
 	IconButton,
@@ -13,6 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import {
 	HTTP_METHOD,
 	HTTP_STATUS,
+	JOB_STATUS,
 } from '../../utils/constants'
 import { ErrorAlert } from '../Alerts'
 import { useAjaxRequest } from '../../hooks/useAjaxRequest'
@@ -54,7 +56,18 @@ export const JobList = (props) => {
 								secondary={`${job.from_time} - ${job.to_time}`}
 							/>
 							<ListItemText
-								primary={job.status}
+								primary={
+									<Chip
+										size='small'
+										label={job.status}
+										color={
+											job.status === JOB_STATUS.SUCCEEDED ? 'success' :
+												job.status === JOB_STATUS.FAILED ? 'error' :
+													job.status === JOB_STATUS.ACTIVE ? 'primary' :
+														undefined
+										}
+									/>
+								}
 								secondary={
 									<>
 										<Typography>
