@@ -13,6 +13,7 @@ import {
 import { JobDAO } from '../../dao/JobDAO'
 import { CryptoHelper } from '../../utils/CryptoHelper'
 import moment from 'moment'
+import { Logger } from '../../utils/Logger'
 
 export default async function handler(req, res) {
 	try {
@@ -21,6 +22,8 @@ export default async function handler(req, res) {
 
 		if (req.method === HTTP_METHOD.POST) {
 			const jobs = await JobDAO.get({ status: JOB_STATUS.SCHEDULED })
+
+			Logger.info(`Scheduling ${jobs.length} jobs`)
 			for (const job of jobs) {
 				const delay_ms = Math.random() * 25 * 60 * 1000 // within 25 mins.
 
@@ -53,6 +56,8 @@ export default async function handler(req, res) {
 
 						data.status = JOB_STATUS.SUCCEEDED
 					} catch (err) {
+						Logger.error(err)
+
 						data.error = (err.message || '').trim()
 						if (err instanceof ExpiredJobError) {
 							data.status = JOB_STATUS.EXPIRED
