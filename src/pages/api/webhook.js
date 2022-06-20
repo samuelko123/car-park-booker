@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 		ApiHelper.checkHttpMethod(req, allowed_methods)
 
 		if (req.method === HTTP_METHOD.POST) {
-			const jobs = await JobDAO.get({ status: JOB_STATUS.ACTIVE })
+			const jobs = await JobDAO.getActiveJobs()
 
 			Logger.info(`Scheduling ${jobs.length} jobs`)
 			for (const job of jobs) {

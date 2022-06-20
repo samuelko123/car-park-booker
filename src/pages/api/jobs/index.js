@@ -34,7 +34,6 @@ export default async function handler(req, res) {
 			const user = await ApiHelper.checkUser(req)
 			const {
 				username,
-				hash,
 			} = user
 
 			// check data
@@ -79,7 +78,6 @@ export default async function handler(req, res) {
 			await JobDAO.create({
 				...data,
 				username: username,
-				hash: hash,
 				status: JOB_STATUS.ACTIVE,
 				run_count: 0,
 				last_run_at: new Date(0),
