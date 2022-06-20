@@ -51,6 +51,6 @@ export class JobDAO {
 
 		const cursor = await db.collection(this.collection_name).aggregate(pipeline)
 		const arr = await cursor.toArray()
-		return arr
+		return MongoHelper.convertMongoIdToStr(arr)
 	}
 }

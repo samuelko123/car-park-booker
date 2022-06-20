@@ -51,15 +51,17 @@ export default async function handler(req, res) {
 						const from_dt = moment(`${date} ${from_time}:00`, 'YYYY.MM.DD HH:mm:ss', true)
 						const to_dt = moment(`${date} ${to_time}:00`, 'YYYY.MM.DD HH:mm:ss', true)
 
-						const booker = new CarParkBooker()
+						const booker = new CarParkBooker(job._id)
 						await booker.login(username, password)
 						await booker.book_car_park(from_dt, to_dt)
 
 						data.status = JOB_STATUS.SUCCEEDED
 					} catch (err) {
-						Logger.error(err)
+						Logger.error({
+							message: (err.message || '').trim(),
+							job_id: job._id,
+						})
 
-						data.error = (err.message || '').trim()
 						if (err instanceof ExpiredJobError) {
 							data.status = JOB_STATUS.EXPIRED
 						} else if (err instanceof NoBayError) {

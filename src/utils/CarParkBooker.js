@@ -6,7 +6,6 @@ import {
 	CAR_PARK_ID,
 	ERROR,
 	STATE_ID,
-	UI_TEXT,
 } from './constants'
 import { Logger } from './Logger'
 import {
@@ -16,9 +15,10 @@ import {
 } from './ErrorHandler'
 
 export class CarParkBooker {
-	constructor() {
+	constructor(job_id) {
 		this._agent = superagent.agent()
 		this._middleware = prefix(process.env.URL_PREFIX)
+		this._job_id = job_id
 	}
 
 	async _http_get(endpoint) {
@@ -55,7 +55,10 @@ export class CarParkBooker {
 	}
 
 	async login(username, password) {
-		Logger.info('Logging in')
+		Logger.info({
+			message: 'Logging in',
+			job_id: this._job_id,
+		})
 		const token = await this._get_token()
 		const endpoint = '/Account/Login'
 		const body = {
@@ -81,7 +84,10 @@ export class CarParkBooker {
 	}
 
 	async _build_form_data(from_dt, to_dt) {
-		Logger.info('Building form data')
+		Logger.info({
+			message: 'Filling form',
+			job_id: this._job_id,
+		})
 		const endpoint = '/BookNow'
 		const html_string = await this._http_get(endpoint)
 		const $ = this._convert_str_to_doc(html_string)
@@ -123,14 +129,20 @@ export class CarParkBooker {
 	async _submit_form(form_data) {
 		const endpoint = '/BookNow/Payment'
 
-		Logger.info('Submitting form - BOT3')
+		Logger.info({
+			message: 'Submitting form - BOT3',
+			job_id: this._job_id,
+		})
 		form_data['CarParkID'] = CAR_PARK_ID.BOT3
 		const html_string_1 = await this._http_post(endpoint, form_data)
 		if (!this._get_error(html_string_1)) {
 			return html_string_1
 		}
 
-		Logger.info('Submitting form - BOT9')
+		Logger.info({
+			message: 'Submitting form - BOT9',
+			job_id: this._job_id,
+		})
 		form_data['CarParkID'] = CAR_PARK_ID.BOT9
 		const html_string_2 = await this._http_post(endpoint, form_data)
 		const error = this._get_error(html_string_2)
@@ -142,7 +154,10 @@ export class CarParkBooker {
 	}
 
 	async _confirm_booking(html_string) {
-		Logger.info('Confirming booking')
+		Logger.info({
+			message: 'Confirming booking',
+			job_id: this._job_id,
+		})
 		const endpoint = '/BookNow/ProcessPayment'
 		const $ = this._convert_str_to_doc(html_string)
 		const form_data = {}
@@ -155,7 +170,10 @@ export class CarParkBooker {
 		})
 
 		await this._http_post(endpoint, form_data)
-		Logger.info(UI_TEXT.BOOKING_SUCCESS)
+		Logger.info({
+			message: 'Booked successfully',
+			job_id: job._id,
+		})
 	}
 
 	async _get_lic_plate() {
