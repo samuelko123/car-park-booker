@@ -49,7 +49,9 @@ export const JOB_STATUS = {
 
 export const LIMIT = {
 	MAX_ACTIVE_JOB_COUNT: 6,
-	MAX_JOB_RUN_DELAY_MS: 25 * 60 * 1000,
+	MAX_JOB_RUN_DELAY_MS: 25 * 60 * 1000, // 25 mins.
+	WEBHOOK_TOKEN_LENGTH: 128,
+	WEBHOOK_TIMESTAMP_AGE: 1 * 60 * 1000, // 1 min.
 }
 
 export const ERROR = {
@@ -57,11 +59,19 @@ export const ERROR = {
 	INCORRECT_CREDENTIALS: 'The username or password your entered is incorrect',
 	INVALID_FROM_DT: 'Invalid "from" date/time',
 	INVALID_ID: 'Invalid id',
+	INVALID_TIMESTAMP: 'Invalid timestamp',
 	INVALID_TO_DT: 'Invalid "to" date/time',
+	INVALID_TOKEN: 'Invalid token',
+	INVALID_SIGNATURE: 'Invalid signature',
 	JOB_EXISTS: 'Job already exists',
 	METHOD_NOT_ALLOWED: 'HTTP method not allowed',
+	MISSING_SIGNATURE: 'Missing signature',
+	MISSING_TIMESTAMP: 'Missing timestamp',
+	MISSING_TOKEN: 'Missing token',
 	REACHED_MAX_ACTIVE_JOB: `You can have up to ${LIMIT.MAX_ACTIVE_JOB_COUNT} active jobs at a time`,
 	SERVER_ERROR: 'Oops, something went wrong, please try again later.',
+	TIMESTAMP_TOO_NEW: 'Timestamp cannot be in the future',
+	TIMESTAMP_TOO_OLD: 'Timestamp is too old',
 	UNAUTHORIZED: 'Please login to continue',
 }
 

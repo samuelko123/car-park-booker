@@ -19,4 +19,14 @@ export class CryptoHelper {
 			return null
 		}
 	}
+
+	static hash(message, secret) {
+		const hmac = crypto.createHmac('sha256', secret)
+		const digest = hmac.update(message).digest('hex')
+		return digest
+	}
+
+	static isEqual = (str1, str2) => {
+		return crypto.timingSafeEqual(Buffer.from(str1), Buffer.from(str2))
+	}
 }
