@@ -83,22 +83,21 @@ export default async function handler(req, res) {
 						const {
 							username,
 							hash,
-							date,
-							from_time,
-							to_time,
+							from_dt,
+							to_dt,
 						} = job
 
-						if (moment(date, 'YYYY.MM.DD', true) <= moment()) {
+						if (moment.utc(from_dt) <= moment().utcOffset(0, true)) {
 							throw new ExpiredJobError()
 						}
 
 						const password = CryptoHelper.decrypt(hash)
-						const from_dt = moment(`${date} ${from_time}:00`, 'YYYY.MM.DD HH:mm:ss', true)
-						const to_dt = moment(`${date} ${to_time}:00`, 'YYYY.MM.DD HH:mm:ss', true)
+						const from_str = moment.utc(from_dt).format('YYYY.MM.DD HH:mm:ss', true)
+						const to_str = moment.utc(to_dt).format('YYYY.MM.DD HH:mm:ss', true)
 
 						const booker = new CarParkBooker(job._id)
 						await booker.login(username, password)
-						await booker.book_car_park(from_dt, to_dt)
+						await booker.book_car_park(from_str, to_str)
 
 						data.status = JOB_STATUS.SUCCEEDED
 					} catch (err) {

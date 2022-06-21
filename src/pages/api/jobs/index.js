@@ -46,12 +46,12 @@ export default async function handler(req, res) {
 				to_time,
 			} = data
 
-			const from_dt = moment(`${date} ${from_time}:00`, 'YYYY.MM.DD HH:mm:ss', true)
+			const from_dt = moment.utc(`${date} ${from_time}:00`, 'YYYY.MM.DD HH:mm:ss', true)
 			if (!from_dt.isValid()) {
 				throw new HttpBadRequestError(ERROR.INVALID_FROM_DT)
 			}
 
-			const to_dt = moment(`${date} ${to_time}:00`, 'YYYY.MM.DD HH:mm:ss', true)
+			const to_dt = moment.utc(`${date} ${to_time}:00`, 'YYYY.MM.DD HH:mm:ss', true)
 			if (!to_dt.isValid()) {
 				throw new HttpBadRequestError(ERROR.INVALID_TO_DT)
 			}
@@ -77,7 +77,8 @@ export default async function handler(req, res) {
 
 			// create job
 			await JobDAO.create({
-				...data,
+				from_dt: from_dt.toDate(),
+				to_dt: to_dt.toDate(),
 				username: username,
 				status: JOB_STATUS.ACTIVE,
 				run_count: 0,

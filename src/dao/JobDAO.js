@@ -33,9 +33,8 @@ export class JobDAO {
 			{
 				$project: {
 					_id: true,
-					date: true,
-					from_time: true,
-					to_time: true,
+					from_dt: true,
+					to_dt: true,
 					run_count: true,
 					username: true,
 					hash: '$user.hash',

@@ -52,8 +52,8 @@ export const JobList = (props) => {
 					{data.map((job, index) => (
 						<BaseListItem key={index} alignItems='flex-start'>
 							<ListItemText
-								primary={job.date}
-								secondary={`${job.from_time} - ${job.to_time}`}
+								primary={moment.utc(job.from_dt).format('YYYY.MM.DD')}
+								secondary={`${moment.utc(job.from_dt).format('HH:mm')} - ${moment.utc(job.to_dt).format('HH:mm')}`}
 								sx={{
 									flex: 0.5,
 								}}
