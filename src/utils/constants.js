@@ -73,6 +73,7 @@ export const ERROR = {
 	SERVER_ERROR: 'Oops, something went wrong, please try again later.',
 	TIMESTAMP_TOO_NEW: 'Timestamp cannot be in the future',
 	TIMESTAMP_TOO_OLD: 'Timestamp is too old',
+	TOO_FAR_FROM_NOW: `You can only book up to ${LIMIT.AVAILABLE_DAYS_IN_ADVANCE} days from now`,
 	UNAUTHORIZED: 'Please login to continue',
 }
 
