@@ -9,7 +9,10 @@ import {
 	UI_TEXT,
 } from '../../utils/constants'
 import { useAjaxRequest } from '../../hooks/useAjaxRequest'
-import { ErrorAlert } from '../../components/Alerts'
+import {
+	ErrorAlert,
+	InfoAlert,
+} from '../../components/Alerts'
 import {
 	Box,
 	CircularProgress,
@@ -88,6 +91,9 @@ export default function Page() {
 	return (
 		<Stack gap={2}>
 			{errMsg && <ErrorAlert>{errMsg}</ErrorAlert>}
+			<InfoAlert>
+				The system will try to book a car park for active jobs for every half an hour.
+			</InfoAlert>
 			<ReadOnlyField
 				fullWidth
 				label='username'
