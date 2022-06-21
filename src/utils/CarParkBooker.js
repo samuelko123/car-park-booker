@@ -83,7 +83,7 @@ export class CarParkBooker {
 		}
 	}
 
-	async _build_form_data(from_dt, to_dt) {
+	async _build_form_data(from_str, to_str) {
 		Logger.info({
 			message: 'Filling form',
 			job_id: this._job_id,
@@ -105,6 +105,9 @@ export class CarParkBooker {
 		form_data['StateID'] = STATE_ID.VIC
 		form_data['LicensePlate_input'] = lic_plate
 		form_data['LicensePlate'] = lic_plate
+
+		const from_dt = moment(from_str, true)
+		const to_dt = moment(to_str, true)
 		form_data['FromDate'] = from_dt.format('YYYY-MM-DD HH:mm:ss.000')
 		form_data['ToDate'] = to_dt.format('YYYY-MM-DD HH:mm:ss.000')
 		form_data['FromDatePicker'] = from_dt.format('DD/MM/YYYY')
