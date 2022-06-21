@@ -57,6 +57,7 @@ export const LIMIT = {
 
 export const ERROR = {
 	BAD_REQUEST: 'Bad Request',
+	CANNOT_DELETE_NON_ACTIVE_JOB: 'You can only delete active jobs',
 	INCORRECT_CREDENTIALS: 'The username or password your entered is incorrect',
 	INVALID_FROM_DT: 'Invalid "from" date/time',
 	INVALID_ID: 'Invalid id',
