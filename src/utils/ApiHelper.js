@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { UserDAO } from '../dao/UserDAO'
+import { ERROR } from './constants'
 import { CryptoHelper } from './CryptoHelper'
 import {
 	HttpBadRequestError,
@@ -16,7 +17,7 @@ export class ApiHelper {
 
 	static checkMongoId(id) {
 		if (!ObjectId.isValid(id)) {
-			throw new HttpBadRequestError()
+			throw new HttpBadRequestError(ERROR.INVALID_ID)
 		}
 	}
 

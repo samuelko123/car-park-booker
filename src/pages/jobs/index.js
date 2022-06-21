@@ -1,23 +1,23 @@
 import React from 'react'
 import moment from 'moment'
-import { BaseDropdown } from '../components/Dropdowns'
-import { BaseButton } from '../components/Buttons'
+import { BaseDropdown } from '../../components/Dropdowns'
+import { BaseButton } from '../../components/Buttons'
 import {
 	HTTP_METHOD,
 	HTTP_STATUS,
 	LIMIT,
 	UI_TEXT,
-} from '../utils/constants'
-import { useAjaxRequest } from '../hooks/useAjaxRequest'
-import { ErrorAlert } from '../components/Alerts'
+} from '../../utils/constants'
+import { useAjaxRequest } from '../../hooks/useAjaxRequest'
+import { ErrorAlert } from '../../components/Alerts'
 import {
 	Box,
 	CircularProgress,
 	Stack,
 } from '@mui/material'
-import { JobList } from '../components/lists/JobList'
-import { ReadOnlyField } from '../components/TextFields'
-import { useUser } from '../hooks/useUser'
+import { JobList } from '../../components/lists/JobList'
+import { ReadOnlyField } from '../../components/TextFields'
+import { useUser } from '../../hooks/useUser'
 
 export default function Page() {
 	const dates = [...Array(LIMIT.AVAILABLE_DAYS_IN_ADVANCE).keys()].map((index) => {

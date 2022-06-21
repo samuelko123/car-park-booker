@@ -32,6 +32,7 @@ export const DB = {
 }
 
 export const UI_TEXT = {
+	BACK: 'Back',
 	BOOK_NOW: 'Book Now',
 	CREATE_JOB: 'Create Job',
 	DELETE: 'Delete',
@@ -58,6 +59,7 @@ export const LIMIT = {
 export const ERROR = {
 	BAD_REQUEST: 'Bad Request',
 	CANNOT_DELETE_NON_ACTIVE_JOB: 'You can only delete active jobs',
+	FORBIDDEN: 'You do not have permission to view this resource',
 	INCORRECT_CREDENTIALS: 'The username or password your entered is incorrect',
 	INVALID_FROM_DT: 'Invalid "from" date/time',
 	INVALID_ID: 'Invalid id',
@@ -70,6 +72,7 @@ export const ERROR = {
 	MISSING_SIGNATURE: 'Missing signature',
 	MISSING_TIMESTAMP: 'Missing timestamp',
 	MISSING_TOKEN: 'Missing token',
+	NOT_FOUND: 'Resource does not exist',
 	REACHED_MAX_ACTIVE_JOB: `You can have up to ${LIMIT.MAX_ACTIVE_JOB_COUNT} active jobs at a time`,
 	SERVER_ERROR: 'Oops, something went wrong, please try again later.',
 	TIMESTAMP_TOO_NEW: 'Timestamp cannot be in the future',

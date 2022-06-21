@@ -36,6 +36,20 @@ export class HttpUnauthorizedError extends Error {
 	}
 }
 
+export class HttpForbiddenError extends Error {
+	constructor(message) {
+		super(message || ERROR.FORBIDDEN)
+		this.status = HTTP_STATUS.FORBIDDEN
+	}
+}
+
+export class HttpNotFoundError extends Error {
+	constructor(message) {
+		super(message || ERROR.NOT_FOUND)
+		this.status = HTTP_STATUS.NOT_FOUND
+	}
+}
+
 export class HttpMethodNotAllowedError extends Error {
 	constructor(allowed_methods) {
 		super(ERROR.METHOD_NOT_ALLOWED)
