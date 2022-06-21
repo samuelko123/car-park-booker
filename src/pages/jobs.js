@@ -5,6 +5,7 @@ import { BaseButton } from '../components/Buttons'
 import {
 	HTTP_METHOD,
 	HTTP_STATUS,
+	LIMIT,
 	UI_TEXT,
 } from '../utils/constants'
 import { useAjaxRequest } from '../hooks/useAjaxRequest'
@@ -19,7 +20,7 @@ import { ReadOnlyField } from '../components/TextFields'
 import { useUser } from '../hooks/useUser'
 
 export default function Page() {
-	const dates = [...Array(14).keys()].map((index) => {
+	const dates = [...Array(LIMIT.AVAILABLE_DAYS_IN_ADVANCE).keys()].map((index) => {
 		const momentObj = moment().add(index + 1, 'days')
 
 		// skip weekend
