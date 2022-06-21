@@ -92,7 +92,7 @@ export default function Page() {
 		<Stack gap={2}>
 			{errMsg && <ErrorAlert>{errMsg}</ErrorAlert>}
 			<InfoAlert>
-				The system will try to book a car park for active jobs for every half an hour.
+				The system will try to book car park for active jobs for every half an hour.
 			</InfoAlert>
 			<ReadOnlyField
 				fullWidth
