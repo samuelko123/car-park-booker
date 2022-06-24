@@ -58,29 +58,9 @@ export class HttpMethodNotAllowedError extends Error {
 	}
 }
 
-export class NoBayError extends Error {
-	constructor(message) {
-		super(message)
-		this.status = HTTP_STATUS.OK
-	}
-}
-
-export class RepeatedBookingError extends Error {
-	constructor(message) {
-		super(message)
-		this.status = HTTP_STATUS.BAD_REQUEST
-	}
-}
-
 export class ValidationError extends Error {
 	constructor(message) {
 		super(typeof message === 'string' ? message : 'Something went wrong\n' + JSON.stringify(message, null, 2))
 		this.status = HTTP_STATUS.BAD_REQUEST
-	}
-}
-
-export class ExpiredJobError extends Error {
-	constructor() {
-		super('Job expired')
 	}
 }

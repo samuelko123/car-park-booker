@@ -22,19 +22,7 @@ export class Logger {
 		await this.log(message, LOG_LEVEL.ERROR)
 	}
 
-	static async warn(message) {
-		await this.log(message, LOG_LEVEL.WARN)
-	}
-
 	static async info(message) {
 		await this.log(message, LOG_LEVEL.INFO)
-	}
-
-	static async http(message) {
-		await this.log(message, LOG_LEVEL.HTTP)
-	}
-
-	static async debug(message) {
-		await this.log(message, LOG_LEVEL.DEBUG)
 	}
 }

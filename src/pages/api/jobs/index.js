@@ -63,7 +63,10 @@ export default async function handler(req, res) {
 			// check for duplicate job
 			const existing_job_count = await JobDAO.getCount({
 				username: username,
-				date: date,
+				from_dt: {
+					$gte: moment.utc(`${date} 00:00:00`, 'YYYY.MM.DD HH:mm:ss', true).toDate(),
+					$lt: moment.utc(`${date} 00:00:00`, 'YYYY.MM.DD HH:mm:ss', true).add(1, 'days').toDate(),
+				},
 				status: JOB_STATUS.ACTIVE,
 			})
 			if (existing_job_count > 0) {

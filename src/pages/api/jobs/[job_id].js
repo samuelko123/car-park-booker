@@ -23,12 +23,18 @@ export default async function handler(req, res) {
 		ApiHelper.checkMongoId(job_id)
 		const user = await ApiHelper.checkUser(req)
 
+		const job = await JobDAO.getOneById(job_id)
+		if(!job) {
+			throw new HttpNotFoundError()
+		}
+
+		if (user.username !== job.username) {
+			throw new HttpForbiddenError()
+		}
+
 		if (req.method === HTTP_METHOD.GET) {
-			const job = await JobDAO.getOneById(job_id)
-			if (user.username !== job.username) {
-				throw new HttpForbiddenError()
-			}
 			const logs = await LogDAO.get({ job_id: job_id })
+
 			res.status(HTTP_STATUS.OK).json({
 				job: job,
 				logs: logs,
@@ -36,16 +42,10 @@ export default async function handler(req, res) {
 		}
 
 		if (req.method === HTTP_METHOD.DELETE) {
-			const job = await JobDAO.getOneById(job_id, ['status', 'username'])
-			if(!job){
-				throw new HttpNotFoundError()
-			}
-			if (user.username !== job.username) {
-				throw new HttpForbiddenError()
-			}
 			if (job.status !== JOB_STATUS.ACTIVE) {
 				throw new HttpBadRequestError(ERROR.CANNOT_DELETE_NON_ACTIVE_JOB)
 			}
+
 			await JobDAO.delete(job_id)
 			res.status(HTTP_STATUS.OK).end()
 		}

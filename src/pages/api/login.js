@@ -32,15 +32,16 @@ export default async function handler(req, res) {
 			// update user record
 			const hash = CryptoHelper.encrypt(password)
 			const filter = { username: username }
-			await UserDAO.upsert(filter, {
+			UserDAO.upsert(filter, {
 				username: username,
 				hash: hash,
-				last_active_at: new Date(),
+				last_active_at: new Date(Date.now()),
 			})
 
 			// set session
 			const session_token = CryptoHelper.encrypt(JSON.stringify({
 				username: username,
+				hash: hash,
 				timestamp: new Date(),
 			}))
 			const cookie_obj = {

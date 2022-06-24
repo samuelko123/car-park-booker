@@ -9,6 +9,7 @@ export class JobDAO {
 	static collection_name = DB.JOBS
 	static create = BaseDAO.create
 	static getOneById = BaseDAO.getOneById
+	static getOne = BaseDAO.getOne
 	static get = BaseDAO.get
 	static getCount = BaseDAO.getCount
 	static update = BaseDAO.update

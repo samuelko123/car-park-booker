@@ -22,6 +22,24 @@ export class MongoHelper {
 		}
 	}
 
+	static async clearDatabase() {
+		if (process.env.NODE_ENV !== 'production') {
+			const { db } = await this.connectToDatabase()
+			const collections = await db.listCollections().toArray()
+			const collection_names = collections.map(x => x.name)
+			for (const name of collection_names) {
+				await db.collection(name).deleteMany({})
+			}
+		}
+	}
+
+	static async disconnectFromDatabase() {
+		if (process.env.NODE_ENV !== 'production') {
+			const { client } = await this.connectToDatabase()
+			await client.close()
+		}
+	}
+
 	static convertMongoIdToStr(obj) {
 		if (!!obj && Array.isArray(obj)) {
 			obj = obj.map(doc => {

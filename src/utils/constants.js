@@ -61,6 +61,7 @@ export const ERROR = {
 	CANNOT_DELETE_NON_ACTIVE_JOB: 'You can only delete active jobs',
 	FORBIDDEN: 'You do not have permission to view this resource',
 	INCORRECT_CREDENTIALS: 'The username or password your entered is incorrect',
+	INCORRECT_HASH: 'Incorrect credentials',
 	INVALID_FROM_DT: 'Invalid "from" date/time',
 	INVALID_ID: 'Invalid id',
 	INVALID_TIMESTAMP: 'Invalid timestamp',
@@ -68,10 +69,14 @@ export const ERROR = {
 	INVALID_TOKEN: 'Invalid token',
 	INVALID_SIGNATURE: 'Invalid signature',
 	JOB_EXISTS: 'Job already exists',
+	JOB_EXPIRED: 'Job expired',
 	METHOD_NOT_ALLOWED: 'HTTP method not allowed',
+	MISSING_HASH: 'Missing hash',
+	MISSING_SESSION_TOKEN: 'Missing session token',
 	MISSING_SIGNATURE: 'Missing signature',
 	MISSING_TIMESTAMP: 'Missing timestamp',
 	MISSING_TOKEN: 'Missing token',
+	MISSING_USERNAME: 'Missing username',
 	NOT_FOUND: 'Resource does not exist',
 	REACHED_MAX_ACTIVE_JOB: `You can have up to ${LIMIT.MAX_ACTIVE_JOB_COUNT} active jobs at a time`,
 	SERVER_ERROR: 'Oops, something went wrong, please try again later.',
@@ -79,6 +84,7 @@ export const ERROR = {
 	TIMESTAMP_TOO_OLD: 'Timestamp is too old',
 	TOO_FAR_FROM_NOW: `You can only book up to ${LIMIT.AVAILABLE_DAYS_IN_ADVANCE} days from now`,
 	UNAUTHORIZED: 'Please login to continue',
+	USER_NOT_FOUND: 'User not found',
 }
 
 // https://bunnings.ubipark.com/State/GetList?countryID=1

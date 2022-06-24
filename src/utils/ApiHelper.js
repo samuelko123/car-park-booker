@@ -41,7 +41,7 @@ export class ApiHelper {
 
 		// update user record
 		UserDAO.upsert(filter, {
-			last_active_at: new Date(),
+			last_active_at: new Date(Date.now()),
 		})
 
 		return user

@@ -17,12 +17,8 @@ export class BaseDAO {
 			return null
 		}
 
-		const arr = await this.get({ _id: id }, fields)
-		if (arr.length === 0) {
-			return null
-		}
-
-		return arr[0]
+		const doc = await this.getOne({ _id: id }, fields)
+		return doc
 	}
 
 	static async getOne(filter, fields) {
@@ -76,13 +72,8 @@ export class BaseDAO {
 		const { db } = await MongoHelper.connectToDatabase()
 
 		const operation = { $set: data }
-		if (Array.isArray(id)) {
-			const query = { _id: { $in: id.map(x => ObjectId(x)) } }
-			return db.collection(this.collection_name).updateMany(query, operation, options)
-		} else {
-			const query = { _id: ObjectId(id) }
-			return db.collection(this.collection_name).updateOne(query, operation, options)
-		}
+		const query = { _id: ObjectId(id) }
+		return db.collection(this.collection_name).updateOne(query, operation, options)
 	}
 
 	static async upsert(filter, data) {
@@ -93,12 +84,7 @@ export class BaseDAO {
 
 	static async delete(id) {
 		const { db } = await MongoHelper.connectToDatabase()
-		if (Array.isArray(id)) {
-			const query = { _id: { $in: id.map(x => ObjectId(x)) } }
-			return await db.collection(this.collection_name).deleteMany(query)
-		} else {
-			const query = { _id: ObjectId(id) }
-			return await db.collection(this.collection_name).deleteOne(query)
-		}
+		const query = { _id: ObjectId(id) }
+		return await db.collection(this.collection_name).deleteOne(query)
 	}
 }
