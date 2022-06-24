@@ -89,7 +89,7 @@ export default function Page() {
 							width: '100%',
 						}}
 					>
-						{['_id', 'username', 'from_dt', 'to_dt', 'status', 'run_count', 'last_run_at'].map(field => {
+						{['_id', 'username', 'from_dt', 'to_dt', 'status', 'run_count', 'last_run_at', 'created_at'].map(field => {
 							let value = data?.job?.[field]
 							if (!value) {
 								return null
