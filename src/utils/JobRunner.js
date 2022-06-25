@@ -21,13 +21,7 @@ export class JobRunner {
 			const from_str = moment.utc(job.from_dt).format('YYYY.MM.DD HH:mm:ss', true)
 			const to_str = moment.utc(job.to_dt).format('YYYY.MM.DD HH:mm:ss', true)
 
-			const logger = {
-				log: (message) => Logger.info({
-					message: message,
-					job_id: job._id,
-				}),
-			}
-			const booker = new CarParkBooker(logger)
+			const booker = new CarParkBooker(job._id)
 			await booker.login(job.username, password)
 			await booker.book_car_park(from_str, to_str)
 

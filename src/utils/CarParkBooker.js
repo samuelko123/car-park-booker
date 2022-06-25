@@ -8,12 +8,24 @@ import {
 	STATE_ID,
 } from './constants'
 import { HttpUnauthorizedError } from './ErrorHandler'
+import { Logger } from './Logger'
 
 export class CarParkBooker {
-	constructor(logger) {
+	constructor(job_id) {
 		this._agent = superagent.agent()
 		this._middleware = prefix(process.env.URL_PREFIX)
-		this._logger = logger
+		if (!job_id) {
+			this._logger = {
+				log: Logger.info,
+			}
+		} else {
+			this._logger = {
+				log: (message) => Logger.info({
+					message: message,
+					job_id: job_id,
+				}),
+			}
+		}
 	}
 
 	async _http_get(endpoint) {
