@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio'
 import * as htmlparser2 from 'htmlparser2'
+import moment from 'moment'
 import superagent from 'superagent'
 import prefix from 'superagent-prefix'
 import {
