@@ -2,6 +2,7 @@ process.env.TEST_SUITE = __filename
 
 import moment from 'moment'
 import { ObjectId } from 'mongodb'
+import { JobDAO } from '../../src/dao/JobDAO'
 import {
 	CarParkBooker,
 	NoBayError,
@@ -9,12 +10,14 @@ import {
 import {
 	ERROR,
 	JOB_STATUS,
+	UI_TEXT,
 } from '../../src/utils/constants'
 import { JobRunner } from '../../src/utils/JobRunner'
 import { Logger } from '../../src/utils/Logger'
 
 jest.mock('../../src/utils/CarParkBooker')
 jest.mock('../../src/utils/Logger')
+jest.mock('../../src/dao/JobDAO')
 
 describe('Job Runner', () => {
 	describe('happy paths', () => {
@@ -30,10 +33,17 @@ describe('Job Runner', () => {
 			moment.now = jest.fn().mockReturnValue(+new Date('2000-01-01T07:00:00'))
 
 			// Action
-			const status = await JobRunner.run(job)
+			await JobRunner.run(job)
 
 			// Assert
-			expect(status).toEqual(JOB_STATUS.SUCCEEDED)
+			expect(Logger.info).toBeCalledWith({
+				job_id: job._id,
+				message: UI_TEXT.BOOKING_SUCCESS,
+			})
+			expect(JobDAO.update).toBeCalledWith(
+				job._id,
+				expect.objectContaining({ status: JOB_STATUS.SUCCEEDED }),
+			)
 		})
 	})
 
@@ -47,10 +57,13 @@ describe('Job Runner', () => {
 			moment.now = jest.fn().mockReturnValue(+new Date('2000-01-01T07:00:00'))
 
 			// Action
-			const status = await JobRunner.run(job)
+			await JobRunner.run(job)
 
 			// Assert
-			expect(status).toEqual(JOB_STATUS.EXPIRED)
+			expect(JobDAO.update).toBeCalledWith(
+				job._id,
+				expect.objectContaining({ status: JOB_STATUS.EXPIRED }),
+			)
 			expect(Logger.error).toBeCalledWith({
 				job_id: job._id,
 				message: ERROR.JOB_EXPIRED,
@@ -68,10 +81,13 @@ describe('Job Runner', () => {
 			CarParkBooker.prototype.book_car_park = jest.fn().mockImplementation(() => { throw mock_error })
 
 			// Action
-			const status = await JobRunner.run(job)
+			await JobRunner.run(job)
 
 			// Assert
-			expect(status).toEqual(JOB_STATUS.ACTIVE)
+			expect(JobDAO.update).toBeCalledWith(
+				job._id,
+				expect.objectContaining({ status: JOB_STATUS.ACTIVE }),
+			)
 			expect(Logger.info).toBeCalledWith({
 				job_id: job._id,
 				message: mock_error.message,
@@ -89,10 +105,13 @@ describe('Job Runner', () => {
 			CarParkBooker.prototype.book_car_park = jest.fn().mockImplementation(() => { throw mock_error })
 
 			// Action
-			const status = await JobRunner.run(job)
+			await JobRunner.run(job)
 
 			// Assert
-			expect(status).toEqual(JOB_STATUS.FAILED)
+			expect(JobDAO.update).toBeCalledWith(
+				job._id,
+				expect.objectContaining({ status: JOB_STATUS.FAILED }),
+			)
 			expect(Logger.error).toBeCalledWith({
 				job_id: job._id,
 				message: mock_error.message,
