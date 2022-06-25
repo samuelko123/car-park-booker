@@ -18,8 +18,8 @@ export class JobRunner {
 			}
 
 			const password = CryptoHelper.decrypt(job.hash)
-			const from_str = moment.utc(job.from_dt).format('YYYY.MM.DD HH:mm:ss', true)
-			const to_str = moment.utc(job.to_dt).format('YYYY.MM.DD HH:mm:ss', true)
+			const from_str = moment.utc(job.from_dt).format('YYYY-MM-DD HH:mm:ss', true)
+			const to_str = moment.utc(job.to_dt).format('YYYY-MM-DD HH:mm:ss', true)
 
 			const booker = new CarParkBooker(job._id)
 			await booker.login(job.username, password)
