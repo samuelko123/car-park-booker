@@ -17,7 +17,7 @@ export class CarParkBooker {
 		this._middleware = prefix(process.env.URL_PREFIX)
 		if (!job_id) {
 			this._logger = {
-				log: Logger.info,
+				log: (message) => Logger.info(message),
 			}
 		} else {
 			this._logger = {
