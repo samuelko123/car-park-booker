@@ -38,7 +38,7 @@ export default function Page() {
 		<>
 			{errMsg && <ErrorAlert>{errMsg}</ErrorAlert>}
 			<InfoAlert>
-				Please login with your {process.env.NEXT_PUBLIC_PARKING_PROVIDER} credentials
+				{`Please login with your ${process.env.NEXT_PUBLIC_PARKING_PROVIDER} credentials`}
 			</InfoAlert>
 			<BaseTextField
 				label='Username'
