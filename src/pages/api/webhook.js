@@ -25,8 +25,7 @@ export default async function handler(req, res) {
 			// schedule jobs to run at different time
 			Logger.info(`Scheduling ${jobs.length} jobs`)
 			jobs.forEach(job => {
-				const delay_ms = Math.random() * LIMIT.MAX_JOB_RUN_DELAY_MS
-				setTimeout(async () => await JobRunner.run(job), delay_ms)
+				setTimeout(async () => await JobRunner.run(job), Math.random() * LIMIT.MAX_JOB_RUN_DELAY_MS)
 			})
 
 			// acknowledge receipt
