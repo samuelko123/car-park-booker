@@ -24,6 +24,7 @@ describe('GET /api/jobs', () => {
 				username: SEEDS[DB.JOBS][0].username,
 			})
 			await global.seedDatabase(DB.JOBS)
+			moment.now = jest.fn().mockReturnValue(+new Date('2000-01-01T07:00:00'))
 
 			// Action
 			await handler(req, res)

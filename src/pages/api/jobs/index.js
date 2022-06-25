@@ -24,8 +24,20 @@ export default async function handler(req, res) {
 			const user = await ApiHelper.checkUser(req)
 			const { username } = user
 
-			const filter = { username: username }
-			const sort = { from_dt: -1 }
+			const today = moment().utcOffset(0, true).set({
+				hour: 0,
+				minute: 0,
+				second: 0,
+				millisecond: 0,
+			}).toDate()
+
+			const filter = {
+				username: username,
+				to_dt: {
+					$gte: today,
+				},
+			}
+			const sort = { to_dt: 1 }
 			const jobs = await JobDAO.get(filter, null, null, sort)
 
 			res.status(HTTP_STATUS.OK).json(jobs)
@@ -56,7 +68,7 @@ export default async function handler(req, res) {
 				throw new HttpBadRequestError(ERROR.INVALID_TO_DT)
 			}
 
-			if(from_dt.diff(moment().utcOffset(0, true), 'days', true) >= LIMIT.AVAILABLE_DAYS_IN_ADVANCE) {
+			if (from_dt.diff(moment().utcOffset(0, true), 'days', true) >= LIMIT.AVAILABLE_DAYS_IN_ADVANCE) {
 				throw new HttpBadRequestError(ERROR.TOO_FAR_FROM_NOW)
 			}
 
