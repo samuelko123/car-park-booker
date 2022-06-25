@@ -25,7 +25,7 @@ export default async function handler(req, res) {
 			const { username } = user
 
 			const filter = { username: username }
-			const sort = { date: -1 }
+			const sort = { from_dt: -1 }
 			const jobs = await JobDAO.get(filter, null, null, sort)
 
 			res.status(HTTP_STATUS.OK).json(jobs)
