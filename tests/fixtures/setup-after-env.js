@@ -31,6 +31,17 @@ beforeAll(async () => {
 		return res
 	}
 
+	// superagent factory
+	global.createMockAgent = (text) => {
+		const agent = {}
+		agent.use = jest.fn().mockReturnValue(agent)
+		agent.get = jest.fn().mockReturnValue(agent)
+		agent.post = jest.fn().mockReturnValue(agent)
+		agent.type = jest.fn().mockReturnValue(agent)
+		agent.send = jest.fn().mockReturnValue({ text: text })
+		return agent
+	}
+
 	// seeding helper
 	global.seedDatabase = async (collection_name) => {
 		const { db } = await MongoHelper.connectToDatabase()
