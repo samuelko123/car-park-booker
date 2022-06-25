@@ -1,16 +1,15 @@
 import React from 'react'
-import Router from 'next/router'
 import Head from 'next/head'
 
 import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../styles/theme'
 
 import {
-	CircularProgress,
 	CssBaseline,
 	Stack,
 } from '@mui/material'
 import { AppBar } from '../components/AppBar'
+import { AuthGuard } from '../components/AuthGuard'
 
 export const AppWrapper = (props) => {
 	const { children } = props
@@ -32,7 +31,9 @@ export const AppWrapper = (props) => {
 					margin: 'auto',
 				}}
 			>
-				{children}
+				<AuthGuard>
+					{children}
+				</AuthGuard>
 			</Stack>
 		</ThemeProvider>
 	)
@@ -44,28 +45,9 @@ export default function App(props) {
 		pageProps: { ...pageProps },
 	} = props
 
-	const [isLoading, setLoading] = React.useState(false)
-
-	Router.onRouteChangeStart = () => {
-		setLoading(true)
-	}
-
-	Router.onRouteChangeComplete = () => {
-		setLoading(false)
-	}
-
-	Router.onRouteChangeError = () => {
-		setLoading(false)
-	}
-
 	return (
 		<AppWrapper>
-			{isLoading &&
-				<CircularProgress />
-			}
-			{!isLoading &&
-				<Component {...pageProps} />
-			}
+			<Component {...pageProps} />
 		</AppWrapper>
 	)
 }
