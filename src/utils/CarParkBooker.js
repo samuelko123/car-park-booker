@@ -9,24 +9,11 @@ import {
 	STATE_ID,
 } from './constants'
 import { HttpUnauthorizedError } from './ErrorHandler'
-import { Logger } from './Logger'
 
 export class CarParkBooker {
-	constructor(job_id) {
+	constructor() {
 		this._agent = superagent.agent()
 		this._middleware = prefix(process.env.URL_PREFIX)
-		if (!job_id) {
-			this._logger = {
-				log: (message) => Logger.info(message),
-			}
-		} else {
-			this._logger = {
-				log: (message) => Logger.info({
-					message: message,
-					job_id: job_id,
-				}),
-			}
-		}
 	}
 
 	async _http_get(endpoint) {
@@ -63,7 +50,6 @@ export class CarParkBooker {
 	}
 
 	async login(username, password) {
-		this._logger.log('Logging in')
 		const token = await this._get_token()
 		const endpoint = '/Account/Login'
 		const body = {
@@ -89,7 +75,6 @@ export class CarParkBooker {
 	}
 
 	async _build_form_data(from_str, to_str) {
-		this._logger.log('Filling form')
 		const endpoint = '/BookNow'
 		const html_string = await this._http_get(endpoint)
 		const $ = this._convert_str_to_doc(html_string)
@@ -134,14 +119,12 @@ export class CarParkBooker {
 	async _submit_form(form_data) {
 		const endpoint = '/BookNow/Payment'
 
-		this._logger.log('Submitting form - BOT3')
 		form_data['CarParkID'] = CAR_PARK_ID.BOT3
 		const html_string_1 = await this._http_post(endpoint, form_data)
 		if (!this._get_error(html_string_1)) {
 			return html_string_1
 		}
 
-		this._logger.log('Submitting form - BOT9')
 		form_data['CarParkID'] = CAR_PARK_ID.BOT9
 		const html_string_2 = await this._http_post(endpoint, form_data)
 		const error = this._get_error(html_string_2)
@@ -153,7 +136,6 @@ export class CarParkBooker {
 	}
 
 	async _confirm_booking(html_string) {
-		this._logger.log('Confirming booking')
 		const endpoint = '/BookNow/ProcessPayment'
 		const $ = this._convert_str_to_doc(html_string)
 		const form_data = {}
@@ -166,7 +148,6 @@ export class CarParkBooker {
 		})
 
 		await this._http_post(endpoint, form_data)
-		this._logger.log('Booked successfully')
 	}
 
 	async _get_lic_plate() {

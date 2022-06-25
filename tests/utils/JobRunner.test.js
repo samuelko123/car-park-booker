@@ -72,7 +72,7 @@ describe('Job Runner', () => {
 
 			// Assert
 			expect(status).toEqual(JOB_STATUS.ACTIVE)
-			expect(Logger.error).toBeCalledWith({
+			expect(Logger.info).toBeCalledWith({
 				job_id: job._id,
 				message: mock_error.message,
 			})
