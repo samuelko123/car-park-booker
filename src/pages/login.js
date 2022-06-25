@@ -7,7 +7,10 @@ import {
 	UI_TEXT,
 } from '../utils/constants'
 import { useAjaxRequest } from '../hooks/useAjaxRequest'
-import { ErrorAlert } from '../components/Alerts'
+import {
+	ErrorAlert,
+	InfoAlert,
+} from '../components/Alerts'
 
 export default function Page() {
 	const router = useRouter()
@@ -34,6 +37,9 @@ export default function Page() {
 	return (
 		<>
 			{errMsg && <ErrorAlert>{errMsg}</ErrorAlert>}
+			<InfoAlert>
+				Please login with your {process.env.NEXT_PUBLIC_PARKING_PROVIDER} credentials
+			</InfoAlert>
 			<BaseTextField
 				label='Username'
 				value={username}
