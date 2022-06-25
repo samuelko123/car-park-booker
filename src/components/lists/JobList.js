@@ -28,7 +28,7 @@ export const JobList = (props) => {
 							<BaseLink href={`/jobs/${job._id}`}>
 								<ListItemButton alignItems='flex-start'>
 									<ListItemText
-										primary={moment.utc(job.from_dt).format('YYYY.MM.DD')}
+										primary={moment.utc(job.from_dt).format('YYYY-MM-DD')}
 										secondary={`${moment.utc(job.from_dt).format('HH:mm')} - ${moment.utc(job.to_dt).format('HH:mm')}`}
 										sx={{
 											flex: 0.5,

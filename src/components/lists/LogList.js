@@ -21,7 +21,7 @@ export const LogList = (props) => {
 					{data.map((log, index) => (
 						<BaseListItem key={index} alignItems='flex-start'>
 							<ListItemText
-								primary={moment.utc(log.timestamp).format('YYYY.MM.DD HH:mm:ss')}
+								primary={moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss')}
 								sx={{ flex: 1.2 }}
 							/>
 							<ListItemText

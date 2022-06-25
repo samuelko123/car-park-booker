@@ -96,7 +96,11 @@ export default function Page() {
 							}
 
 							if (field === 'from_dt' || field === 'to_dt') {
-								value = moment.utc(value).format('YYYY.MM.DD HH:mm:ss')
+								value = moment.utc(value).format('YYYY-MM-DD HH:mm:ss')
+							}
+
+							if (field === 'last_run_at' || field === 'created_at') {
+								value = moment(value).format('YYYY-MM-DD HH:mm:ss')
 							}
 
 							return (
