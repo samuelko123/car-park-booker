@@ -62,7 +62,7 @@ describe('Car Park Booker', () => {
 			}
 
 			// Action
-			const fn = async () => await booker.book_car_park('2000.01.01 07:00:00', '2000.01.01 19:00:00')
+			const fn = async () => await booker.book_car_park('2000-01-01 07:00:00', '2000-01-01 19:00:00')
 
 			// Assert
 			await expect(fn).not.toThrow()
@@ -94,7 +94,7 @@ describe('Car Park Booker', () => {
 			}
 
 			// Action
-			const fn = async () => await booker.book_car_park('2000.01.01 07:00:00', '2000.01.01 19:00:00')
+			const fn = async () => await booker.book_car_park('2000-01-01 07:00:00', '2000-01-01 19:00:00')
 
 			// Assert
 			await expect(fn).rejects.toThrow(mock_error)
@@ -126,7 +126,7 @@ describe('Car Park Booker', () => {
 			}
 
 			// Action
-			const fn = async () => await booker.book_car_park('2000.01.01 07:00:00', '2000.01.01 19:00:00')
+			const fn = async () => await booker.book_car_park('2000-01-01 07:00:00', '2000-01-01 19:00:00')
 
 			// Assert
 			await expect(fn).rejects.toThrow(mock_error)

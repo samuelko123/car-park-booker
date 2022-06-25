@@ -46,12 +46,12 @@ export default async function handler(req, res) {
 				to_time,
 			} = data
 
-			const from_dt = moment.utc(`${date} ${from_time}:00`, 'YYYY.MM.DD HH:mm:ss', true)
+			const from_dt = moment.utc(`${date} ${from_time}:00`, 'YYYY-MM-DD HH:mm:ss', true)
 			if (!from_dt.isValid()) {
 				throw new HttpBadRequestError(ERROR.INVALID_FROM_DT)
 			}
 
-			const to_dt = moment.utc(`${date} ${to_time}:00`, 'YYYY.MM.DD HH:mm:ss', true)
+			const to_dt = moment.utc(`${date} ${to_time}:00`, 'YYYY-MM-DD HH:mm:ss', true)
 			if (!to_dt.isValid()) {
 				throw new HttpBadRequestError(ERROR.INVALID_TO_DT)
 			}
@@ -64,8 +64,8 @@ export default async function handler(req, res) {
 			const existing_job_count = await JobDAO.getCount({
 				username: username,
 				from_dt: {
-					$gte: moment.utc(`${date} 00:00:00`, 'YYYY.MM.DD HH:mm:ss', true).toDate(),
-					$lt: moment.utc(`${date} 00:00:00`, 'YYYY.MM.DD HH:mm:ss', true).add(1, 'days').toDate(),
+					$gte: moment.utc(`${date} 00:00:00`, 'YYYY-MM-DD HH:mm:ss', true).toDate(),
+					$lt: moment.utc(`${date} 00:00:00`, 'YYYY-MM-DD HH:mm:ss', true).add(1, 'days').toDate(),
 				},
 				status: JOB_STATUS.ACTIVE,
 			})

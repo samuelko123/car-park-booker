@@ -67,7 +67,7 @@ describe('POST /api/jobs', () => {
 
 			moment.now = jest.fn().mockReturnValue(+new Date('2000-01-01T07:00:00'))
 			req.body = {
-				date: '2000.01.02',
+				date: '2000-01-02',
 				from_time: '07:00',
 				to_time: '19:00',
 			}
@@ -99,7 +99,7 @@ describe('POST /api/jobs', () => {
 			const res = global.createMockRes()
 
 			req.body = {
-				date: '0000.00.00',
+				date: '2000-00-00',
 				from_time: '07:00',
 				to_time: '19:00',
 			}
@@ -119,7 +119,7 @@ describe('POST /api/jobs', () => {
 			Validator.validate = jest.fn()
 
 			req.body = {
-				date: '2000.01.01',
+				date: '2000-01-01',
 				from_time: '07:00',
 				to_time: '44:44',
 			}
@@ -139,7 +139,7 @@ describe('POST /api/jobs', () => {
 			moment.now = jest.fn().mockReturnValue(+new Date('2000-01-01T07:00:00'))
 
 			req.body = {
-				date: '2000.02.01',
+				date: '2000-02-01',
 				from_time: '07:00',
 				to_time: '19:00',
 			}
@@ -165,7 +165,7 @@ describe('POST /api/jobs', () => {
 
 			moment.now = jest.fn().mockReturnValue(+new Date('2000-01-01T07:00:00'))
 			req.body = {
-				date: '2000.01.01',
+				date: '2000-01-01',
 				from_time: '07:00',
 				to_time: '19:00',
 			}
@@ -195,7 +195,7 @@ describe('POST /api/jobs', () => {
 
 			moment.now = jest.fn().mockReturnValue(+new Date('2000-01-01T07:00:00'))
 			req.body = {
-				date: '2000.01.02',
+				date: '2000-01-02',
 				from_time: '07:00',
 				to_time: '19:00',
 			}

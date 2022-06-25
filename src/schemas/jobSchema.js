@@ -5,7 +5,7 @@ export const jobSchema = {
 	properties: {
 		date: {
 			type: 'string',
-			pattern: '^[0-9]{4}[.][0-9]{2}[.][0-9]{2}$', // match yyyy.mm.dd
+			pattern: '^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$', // match yyyy-mm-dd
 		},
 		from_time: {
 			type: 'string',
