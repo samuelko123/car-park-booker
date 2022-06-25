@@ -30,7 +30,7 @@ export default function Page() {
 		}
 
 		await sendRequest(request, () => {
-			router.push('/')
+			router.reload()
 		})
 	}
 

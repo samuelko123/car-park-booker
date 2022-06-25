@@ -31,7 +31,7 @@ export const AppBar = (props) => {
 		}
 
 		await sendRequest(request, () => {
-			router.push('/')
+			router.reload()
 		})
 	}
 
