@@ -11,6 +11,7 @@ import {
 	ErrorAlert,
 	InfoAlert,
 } from '../components/Alerts'
+import { Stack } from '@mui/material'
 
 export default function Page() {
 	const router = useRouter()
@@ -40,24 +41,27 @@ export default function Page() {
 			<InfoAlert>
 				{`Please login with your ${process.env.NEXT_PUBLIC_PARKING_PROVIDER} credentials`}
 			</InfoAlert>
-			<BaseTextField
-				label='Username'
-				value={username}
-				onChange={setUsername}
-			/>
-			<BaseTextField
-				type='password'
-				label='Password'
-				value={password}
-				onChange={setPassword}
-			/>
-			<BaseButton
-				variant='contained'
-				onClick={handleSubmit}
-				loading={isLoading}
-			>
-				{UI_TEXT.LOGIN}
-			</BaseButton>
+			<Stack gap={2} component='form'>
+				<BaseTextField
+					label='Username'
+					value={username}
+					onChange={setUsername}
+				/>
+				<BaseTextField
+					type='password'
+					label='Password'
+					value={password}
+					onChange={setPassword}
+				/>
+				<BaseButton
+					variant='contained'
+					onClick={handleSubmit}
+					loading={isLoading}
+					type='submit'
+				>
+					{UI_TEXT.LOGIN}
+				</BaseButton>
+			</Stack>
 		</>
 	)
 }
