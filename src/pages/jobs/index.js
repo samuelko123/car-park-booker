@@ -9,14 +9,16 @@ import {
 	UI_TEXT,
 } from '../../utils/constants'
 import { useAjaxRequest } from '../../hooks/useAjaxRequest'
-import {
-	ErrorAlert,
-	InfoAlert,
-} from '../../components/Alerts'
+import { ErrorAlert } from '../../components/Alerts'
 import {
 	Box,
+	Card,
+	CardContent,
+	CardHeader,
 	CircularProgress,
+	Link,
 	Stack,
+	Typography,
 } from '@mui/material'
 import { JobList } from '../../components/lists/JobList'
 import { ReadOnlyField } from '../../components/TextFields'
@@ -89,11 +91,31 @@ export default function Page() {
 	}, [handleFetchData])
 
 	return (
-		<Stack gap={2}>
+		<Stack
+			gap={2}
+			component='form'
+		>
+			<Card>
+				<CardHeader
+					title='Instructions'
+					sx={{ paddingBottom: 0 }}
+				/>
+				<CardContent>
+					<Typography>
+						1. Create a job
+					</Typography>
+					<Typography>
+						2. The system will run the job from time to time
+					</Typography>
+					<Typography>
+						3. If you get a spot, you will receive an email from {process.env.NEXT_PUBLIC_PARKING_PROVIDER}
+					</Typography>
+					<Typography>
+						4. [Optional] <Link target='_blank' href='https://www.buymeacoffee.com/samuelko'>Buy me a coffee</Link>
+					</Typography>
+				</CardContent>
+			</Card>
 			{errMsg && <ErrorAlert>{errMsg}</ErrorAlert>}
-			<InfoAlert>
-				The system will try to book car park for active jobs for every half an hour.
-			</InfoAlert>
 			<ReadOnlyField
 				fullWidth
 				label='username'
@@ -122,6 +144,7 @@ export default function Page() {
 				variant='contained'
 				onClick={handleSubmit}
 				loading={isLoading}
+				type='submit'
 			>
 				{UI_TEXT.CREATE_JOB}
 			</BaseButton>
