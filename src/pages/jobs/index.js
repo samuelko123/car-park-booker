@@ -11,10 +11,10 @@ import {
 import { useAjaxRequest } from '../../hooks/useAjaxRequest'
 import { ErrorAlert } from '../../components/Alerts'
 import {
+	Accordion,
+	AccordionDetails,
+	AccordionSummary,
 	Box,
-	Card,
-	CardContent,
-	CardHeader,
 	CircularProgress,
 	Link,
 	Stack,
@@ -23,6 +23,7 @@ import {
 import { JobList } from '../../components/lists/JobList'
 import { ReadOnlyField } from '../../components/TextFields'
 import { useUser } from '../../hooks/useUser'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 export default function Page() {
 	const dates = [...Array(LIMIT.AVAILABLE_DAYS_IN_ADVANCE).keys()].map((index) => {
@@ -95,12 +96,11 @@ export default function Page() {
 			gap={2}
 			component='form'
 		>
-			<Card>
-				<CardHeader
-					title='Instructions'
-					sx={{ paddingBottom: 0 }}
-				/>
-				<CardContent>
+			<Accordion>
+				<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+					<Typography variant='h6'>Instructions</Typography>
+				</AccordionSummary>
+				<AccordionDetails>
 					<Typography>
 						1. Create a job
 					</Typography>
@@ -113,8 +113,8 @@ export default function Page() {
 					<Typography>
 						4. [Optional] <Link target='_blank' href='https://www.buymeacoffee.com/samuelko'>Buy me a coffee</Link>
 					</Typography>
-				</CardContent>
-			</Card>
+				</AccordionDetails>
+			</Accordion>
 			{errMsg && <ErrorAlert>{errMsg}</ErrorAlert>}
 			<ReadOnlyField
 				fullWidth
