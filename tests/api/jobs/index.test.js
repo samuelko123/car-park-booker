@@ -8,7 +8,6 @@ import {
 	ERROR,
 	HTTP_METHOD,
 	HTTP_STATUS,
-	JOB_STATUS,
 	LIMIT,
 } from '../../../src/utils/constants'
 import { MongoHelper } from '../../../src/utils/MongoHelper'
@@ -87,7 +86,7 @@ describe('POST /api/jobs', () => {
 			expect(JobRunner.run).toBeCalledWith(expect.objectContaining({
 				_id: expect.any(String),
 				username: test_username,
-				status: JOB_STATUS.ACTIVE,
+				hash: expect.any(String),
 				run_count: 0,
 			}))
 			expect(res.status).toBeCalledWith(HTTP_STATUS.CREATED)

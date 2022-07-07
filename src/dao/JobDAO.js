@@ -15,11 +15,12 @@ export class JobDAO {
 	static update = BaseDAO.update
 	static delete = BaseDAO.delete
 
-	static async getActiveJobs() {
+	static async getActiveJobs(job_id) {
 		const { db } = await MongoHelper.connectToDatabase()
 		const pipeline = [
 			{
 				$match: {
+					_id: job_id || { $exists: true },
 					status: JOB_STATUS.ACTIVE,
 				},
 			},

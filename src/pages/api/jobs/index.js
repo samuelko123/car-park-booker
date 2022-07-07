@@ -105,7 +105,8 @@ export default async function handler(req, res) {
 				created_at: new Date(),
 			})
 
-			const job = await JobDAO.getOneById(insertedId)
+			const jobs = await JobDAO.getActiveJobs(insertedId)
+			const job = jobs[0]
 
 			// run job for once
 			await JobRunner.run(job)
