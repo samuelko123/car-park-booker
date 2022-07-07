@@ -14,6 +14,7 @@ import { Validator } from '../../../utils/Validator'
 import { jobSchema } from '../../../schemas/jobSchema'
 import { JobDAO } from '../../../dao/JobDAO'
 import moment from 'moment'
+import { JobRunner } from '../../../utils/JobRunner'
 
 export default async function handler(req, res) {
 	try {
@@ -95,7 +96,7 @@ export default async function handler(req, res) {
 			}
 
 			// create job
-			await JobDAO.create({
+			const { insertedId } = await JobDAO.create({
 				from_dt: from_dt.toDate(),
 				to_dt: to_dt.toDate(),
 				username: username,
@@ -103,6 +104,11 @@ export default async function handler(req, res) {
 				run_count: 0,
 				created_at: new Date(),
 			})
+
+			const job = await JobDAO.getOneById(insertedId)
+
+			// run job for once
+			await JobRunner.run(job)
 
 			// done
 			res.status(HTTP_STATUS.CREATED).end()

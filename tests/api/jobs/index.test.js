@@ -8,11 +8,15 @@ import {
 	ERROR,
 	HTTP_METHOD,
 	HTTP_STATUS,
+	JOB_STATUS,
 	LIMIT,
 } from '../../../src/utils/constants'
 import { MongoHelper } from '../../../src/utils/MongoHelper'
 import { Validator } from '../../../src/utils/Validator'
+import { JobRunner } from '../../../src/utils/JobRunner'
 import { SEEDS } from '../../fixtures/seeds'
+
+jest.mock('../../../src/utils/JobRunner')
 
 describe('GET /api/jobs', () => {
 	describe('happy paths', () => {
@@ -61,8 +65,9 @@ describe('POST /api/jobs', () => {
 			const req = global.createMockReq(HTTP_METHOD.POST)
 			const res = global.createMockRes()
 
+			const test_username = SEEDS[DB.JOBS][0].username
 			ApiHelper.checkUser = jest.fn().mockReturnValue({
-				username: SEEDS[DB.JOBS][0].username,
+				username: test_username,
 			})
 			await global.seedDatabase(DB.USERS)
 
@@ -73,10 +78,18 @@ describe('POST /api/jobs', () => {
 				to_time: '19:00',
 			}
 
+			JobRunner.run = jest.fn()
+
 			// Action
 			await handler(req, res)
 
 			// Assert
+			expect(JobRunner.run).toBeCalledWith(expect.objectContaining({
+				_id: expect.any(String),
+				username: test_username,
+				status: JOB_STATUS.ACTIVE,
+				run_count: 0,
+			}))
 			expect(res.status).toBeCalledWith(HTTP_STATUS.CREATED)
 		})
 	})
