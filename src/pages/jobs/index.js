@@ -108,7 +108,10 @@ export default function Page() {
 						2. The system will run the job from time to time
 					</Typography>
 					<Typography>
-						3. If you get a spot, you will receive an email from {process.env.NEXT_PUBLIC_PARKING_PROVIDER}
+						3.1. If you get a spot, you will receive an email from {process.env.NEXT_PUBLIC_PARKING_PROVIDER}
+					</Typography>
+					<Typography>
+						3.2. If the job failed, you can re-create the job to try again
 					</Typography>
 					<Typography>
 						4. [Optional] <Link target='_blank' href='https://www.buymeacoffee.com/samuelko'>Buy me a coffee</Link>
