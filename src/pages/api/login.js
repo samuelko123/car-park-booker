@@ -22,10 +22,9 @@ export default async function handler(req, res) {
 			Validator.validate(loginSchema, data)
 
 			// check credentials
-			const {
-				username,
-				password,
-			} = data
+			const username = (data.username || '').toLowerCase()
+			const password = data.password
+
 			const booker = new CarParkBooker()
 			await booker.login(username, password)
 
