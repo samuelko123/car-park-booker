@@ -149,10 +149,10 @@ describe('POST /api/jobs', () => {
 			// Arrange
 			const req = global.createMockReq(HTTP_METHOD.POST)
 			const res = global.createMockRes()
-			moment.now = jest.fn().mockReturnValue(+new Date('2000-01-01T07:00:00'))
+			moment.now = jest.fn().mockReturnValue(+new Date('2000-01-01T08:00:00'))
 
 			req.body = {
-				date: '2000-02-01',
+				date: '2000-01-23',
 				from_time: '07:00',
 				to_time: '19:00',
 			}
