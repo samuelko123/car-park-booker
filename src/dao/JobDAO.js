@@ -54,4 +54,39 @@ export class JobDAO {
 		const arr = await cursor.toArray()
 		return MongoHelper.convertMongoIdToStr(arr)
 	}
+
+	static async getStat() {
+		const { db } = await MongoHelper.connectToDatabase()
+		const pipeline = [
+			{
+				$group: {
+					_id: {
+						username: '$username',
+						status: '$status',
+					},
+					job_count: { $count: {} },
+					run_count: { $sum: '$run_count' },
+				},
+			},
+			{
+				$project: {
+					_id: false,
+					username: '$_id.username',
+					status: '$_id.status',
+					job_count: '$job_count',
+					run_count: '$run_count',
+				},
+			},
+			{
+				$sort: {
+					username: 1,
+					status: 1,
+				},
+			},
+		]
+
+		const cursor = await db.collection(this.collection_name).aggregate(pipeline)
+		const arr = await cursor.toArray()
+		return arr
+	}
 }
