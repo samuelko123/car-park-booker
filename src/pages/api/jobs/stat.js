@@ -16,8 +16,8 @@ export default async function handler(req, res) {
 
 		if (req.method === HTTP_METHOD.GET) {
 			const user = await ApiHelper.checkSessionToken(req)
-			if (user !== process.env.ADMIN_EMAIL) {
-				throw HttpForbiddenError()
+			if (user?.username !== process.env.ADMIN_EMAIL) {
+				throw new HttpForbiddenError()
 			}
 
 			const arr = await JobDAO.getStat()
