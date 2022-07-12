@@ -28,12 +28,11 @@ export class ApiHelper {
 		}
 
 		const decrypted = JSON.parse(CryptoHelper.decrypt(session_token))
-		const { username } = decrypted
-		if (!username) {
+		if (!decrypted || !decrypted.username) {
 			throw new HttpUnauthorizedError()
 		}
 
-		const filter = { username: username }
+		const filter = { username: decrypted.username }
 		const user = await UserDAO.getOne(filter, ['username', 'hash'])
 		if (!user) {
 			throw new HttpUnauthorizedError()
