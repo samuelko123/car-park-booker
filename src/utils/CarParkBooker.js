@@ -139,7 +139,7 @@ export class CarParkBooker {
 		const endpoint = '/BookNow/ProcessPayment'
 		const $ = this._convert_str_to_doc(html_string)
 		const form_data = {}
-		$(':input').each((_, elem) => {
+		$('#formEdit :input').each((_, elem) => {
 			const name = elem.attribs['name']
 			const value = elem.attribs['value']
 			if (!!name) {
