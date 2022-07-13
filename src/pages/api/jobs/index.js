@@ -69,7 +69,9 @@ export default async function handler(req, res) {
 				throw new HttpBadRequestError(ERROR.INVALID_TO_DT)
 			}
 
-			if (from_dt.diff(moment().utcOffset(0, true), 'days', true) > LIMIT.AVAILABLE_DAYS_IN_ADVANCE) {
+			const now = moment().utcOffset(0, true).set('hours', 0).set('minutes', 0).set('seconds', 0).set('milliseconds', 0)
+			const from_date = moment.utc(`${date} 00:00:00`, 'YYYY-MM-DD HH:mm:ss', true).set('milliseconds', 0)
+			if (from_date.diff(now, 'days', true) > LIMIT.AVAILABLE_DAYS_IN_ADVANCE) {
 				throw new HttpBadRequestError(ERROR.TOO_FAR_FROM_NOW)
 			}
 
