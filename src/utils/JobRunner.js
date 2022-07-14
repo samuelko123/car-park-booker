@@ -44,7 +44,7 @@ export class JobRunner {
 				status = JOB_STATUS.ACTIVE
 			} else {
 				Logger.error({
-					message: (err.message || '').trim(),
+					message: (err?.response?.error?.text || err.message || '').trim(),
 					job_id: job._id,
 				})
 
