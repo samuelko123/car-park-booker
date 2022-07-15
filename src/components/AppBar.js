@@ -69,7 +69,7 @@ export const AppBar = (props) => {
 						sx={{ color: 'inherit' }}
 					/>
 				}
-				{user &&
+				{user && !isLoading &&
 					<Tooltip title={UI_TEXT.LOGOUT}>
 						<IconButton
 							onClick={handleSubmit}
