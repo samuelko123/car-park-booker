@@ -21,7 +21,10 @@ import {
 	Typography,
 } from '@mui/material'
 import { JobList } from '../../components/lists/JobList'
-import { ReadOnlyField } from '../../components/TextFields'
+import {
+	BaseTextField,
+	ReadOnlyField,
+} from '../../components/TextFields'
 import { useUser } from '../../hooks/useUser'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
@@ -54,9 +57,21 @@ export default function Page() {
 	const [date, setDate] = React.useState(dates[0].value)
 	const [fromTime, setFromTime] = React.useState('07:00')
 	const [toTime, setToTime] = React.useState('19:00')
+	const [licPlate, setLicPlate] = React.useState('')
+	const [isLicPlateMissing, setIsLicPlateMissing] = React.useState(false)
 	const [errMsg, isLoading, sendRequest] = useAjaxRequest()
 	const [fetchErrMsg, isFetching, sendFetchingRequest] = useAjaxRequest()
 	const [, isFetchingUser, user] = useUser()
+
+	React.useEffect(() => {
+		if (!!user?.lic_plate) {
+			setLicPlate(user.lic_plate)
+		}
+	}, [user])
+
+	const handleLicPlateChange = (val) => {
+		setLicPlate(val.toUpperCase())
+	}
 
 	const handleFetchData = React.useCallback(async () => {
 		const request = {
@@ -70,6 +85,13 @@ export default function Page() {
 	}, [sendFetchingRequest])
 
 	const handleSubmit = async () => {
+		if (!licPlate) {
+			setIsLicPlateMissing(true)
+			return
+		} else {
+			setIsLicPlateMissing(false)
+		}
+
 		const request = {
 			url: '/api/jobs',
 			method: HTTP_METHOD.POST,
@@ -77,6 +99,7 @@ export default function Page() {
 				date: date,
 				from_time: fromTime,
 				to_time: toTime,
+				lic_plate: licPlate,
 			},
 		}
 
@@ -125,20 +148,28 @@ export default function Page() {
 				value={isFetchingUser ? 'Loading...' : (user?.username || '')}
 				InputLabelProps={{ shrink: true }}
 			/>
+			<BaseTextField
+				label='license plate'
+				value={licPlate}
+				onChange={handleLicPlateChange}
+				InputLabelProps={{ shrink: true }}
+				required={true}
+				error={isLicPlateMissing}
+			/>
 			<BaseDropdown
-				label='Date'
+				label='date'
 				value={date}
 				onChange={setDate}
 				options={dates}
 			/>
 			<BaseDropdown
-				label='From'
+				label='from'
 				value={fromTime}
 				onChange={setFromTime}
 				options={times}
 			/>
 			<BaseDropdown
-				label='To'
+				label='to'
 				value={toTime}
 				onChange={setToTime}
 				options={times}

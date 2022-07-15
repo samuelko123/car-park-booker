@@ -27,7 +27,7 @@ export class JobRunner {
 
 			const booker = new CarParkBooker()
 			await booker.login(job.username, password)
-			await booker.book_car_park(from_str, to_str)
+			await booker.book_car_park(from_str, to_str, job.lic_plate)
 			Logger.info({
 				message: UI_TEXT.BOOKING_SUCCESS,
 				job_id: job._id,
@@ -44,7 +44,7 @@ export class JobRunner {
 				status = JOB_STATUS.ACTIVE
 			} else {
 				Logger.error({
-					message: (err?.response?.error?.text || err.message || '').trim(),
+					message: (err?.response?.error?.message || err.message || '').trim(),
 					job_id: job._id,
 				})
 

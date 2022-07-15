@@ -75,6 +75,7 @@ describe('POST /api/jobs', () => {
 				date: '2000-01-02',
 				from_time: '07:00',
 				to_time: '19:00',
+				lic_plate: 'ABC123',
 			}
 
 			JobRunner.run = jest.fn()
@@ -115,6 +116,7 @@ describe('POST /api/jobs', () => {
 				date: '2000-00-00',
 				from_time: '07:00',
 				to_time: '19:00',
+				lic_plate: 'ABC123',
 			}
 
 			// Action
@@ -181,6 +183,7 @@ describe('POST /api/jobs', () => {
 				date: '2000-01-01',
 				from_time: '07:00',
 				to_time: '19:00',
+				lic_plate: 'ABC123',
 			}
 
 			// Action
@@ -211,6 +214,7 @@ describe('POST /api/jobs', () => {
 				date: '2000-01-02',
 				from_time: '07:00',
 				to_time: '19:00',
+				lic_plate: 'ABC123',
 			}
 
 			// Action

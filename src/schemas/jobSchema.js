@@ -1,6 +1,6 @@
 export const jobSchema = {
 	type: 'object',
-	minProperties: 3,
+	required: ['date', 'from_time', 'to_time', 'lic_plate'],
 	additionalProperties: false,
 	properties: {
 		date: {
@@ -14,6 +14,10 @@ export const jobSchema = {
 		to_time: {
 			type: 'string',
 			pattern: '^([0-1]?[0-9]|2[0-3]):[03][0]$',
+		},
+		lic_plate: {
+			type: 'string',
+			pattern: '^[0-9A-Z]{1,6}$',
 		},
 	},
 }

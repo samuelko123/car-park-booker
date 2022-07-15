@@ -19,6 +19,7 @@ export default async function handler(req, res) {
 				const user = await ApiHelper.checkSessionToken(req)
 				res.status(HTTP_STATUS.OK).json({
 					username: user.username,
+					lic_plate: user.lic_plate,
 				})
 			} catch (err) {
 				if (err instanceof HttpUnauthorizedError) {

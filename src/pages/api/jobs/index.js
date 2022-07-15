@@ -15,6 +15,7 @@ import { jobSchema } from '../../../schemas/jobSchema'
 import { JobDAO } from '../../../dao/JobDAO'
 import moment from 'moment'
 import { JobRunner } from '../../../utils/JobRunner'
+import { UserDAO } from '../../../dao/UserDAO'
 
 export default async function handler(req, res) {
 	try {
@@ -50,15 +51,20 @@ export default async function handler(req, res) {
 				username,
 			} = user
 
-			// check data
+			// extract fields
 			const data = req.body
 			Validator.validate(jobSchema, data)
 			const {
 				date,
 				from_time,
 				to_time,
+				lic_plate,
 			} = data
 
+			// update user info
+			UserDAO.update(user._id, { lic_plate: lic_plate })
+
+			// check data
 			const from_dt = moment.utc(`${date} ${from_time}:00`, 'YYYY-MM-DD HH:mm:ss', true)
 			if (!from_dt.isValid()) {
 				throw new HttpBadRequestError(ERROR.INVALID_FROM_DT)
@@ -102,15 +108,15 @@ export default async function handler(req, res) {
 				from_dt: from_dt.toDate(),
 				to_dt: to_dt.toDate(),
 				username: username,
+				lic_plate: lic_plate,
 				status: JOB_STATUS.ACTIVE,
 				run_count: 0,
 				created_at: new Date(),
 			})
 
+			// run job for once
 			const jobs = await JobDAO.getActiveJobs(insertedId)
 			const job = jobs[0]
-
-			// run job for once
 			await JobRunner.run(job)
 
 			// done

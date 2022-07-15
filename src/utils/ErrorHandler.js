@@ -15,7 +15,7 @@ export class ErrorHandler {
 			url: req.url,
 			method: req.method,
 			status: status,
-			message: err?.response?.error?.text || err.message || '',
+			message: err?.response?.error?.message || err.message || '',
 		})
 
 		res.status(status).send(err.message || ERROR.SERVER_ERROR)

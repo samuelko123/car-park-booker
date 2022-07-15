@@ -66,15 +66,15 @@ export class CarParkBooker {
 		}
 	}
 
-	async book_car_park(from_dt, to_dt) {
-		const form_data = await this._build_form_data(from_dt, to_dt)
+	async book_car_park(from_dt, to_dt, lic_plate) {
+		const form_data = await this._build_form_data(from_dt, to_dt, lic_plate)
 		const html_string = await this._submit_form(form_data)
 		if (!!html_string) {
 			await this._confirm_booking(html_string)
 		}
 	}
 
-	async _build_form_data(from_str, to_str) {
+	async _build_form_data(from_str, to_str, lic_plate) {
 		const endpoint = '/BookNow'
 		const html_string = await this._http_get(endpoint)
 		const $ = this._convert_str_to_doc(html_string)
@@ -88,7 +88,6 @@ export class CarParkBooker {
 			}
 		})
 
-		const lic_plate = await this._get_lic_plate()
 		form_data['StateID'] = STATE_ID.VIC
 		form_data['LicensePlate_input'] = lic_plate
 		form_data['LicensePlate'] = lic_plate
@@ -148,17 +147,6 @@ export class CarParkBooker {
 		})
 
 		await this._http_post(endpoint, form_data)
-	}
-
-	async _get_lic_plate() {
-		const endpoint = '/Vehicle/Read'
-		const body = {
-			page: 1,
-			pageSize: 500,
-		}
-		const data = await this._http_post(endpoint, body)
-		const lic_plate = JSON.parse(data).Data.filter(elem => elem.Active === true)[0].LicensePlate
-		return lic_plate
 	}
 }
 

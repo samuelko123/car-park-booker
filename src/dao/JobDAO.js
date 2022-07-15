@@ -40,6 +40,7 @@ export class JobDAO {
 					run_count: true,
 					username: true,
 					hash: '$user.hash',
+					lic_plate: true,
 				},
 			},
 			{
