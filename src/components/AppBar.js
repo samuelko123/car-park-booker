@@ -15,6 +15,7 @@ import {
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useAjaxRequest } from '../hooks/useAjaxRequest'
 import { ErrorAlert } from './Alerts'
+import { AuthContext } from './AuthProvider'
 
 export const AppBar = (props) => {
 	const {
@@ -22,6 +23,7 @@ export const AppBar = (props) => {
 	} = props
 
 	const router = useRouter()
+	const { user } = React.useContext(AuthContext)
 	const [errMsg, isLoading, sendRequest] = useAjaxRequest()
 
 	const handleSubmit = async () => {
@@ -67,7 +69,7 @@ export const AppBar = (props) => {
 						sx={{ color: 'inherit' }}
 					/>
 				}
-				{!isLoading && router.asPath !== '/login' && router.asPath !== '/' &&
+				{user &&
 					<Tooltip title={UI_TEXT.LOGOUT}>
 						<IconButton
 							onClick={handleSubmit}
