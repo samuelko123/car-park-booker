@@ -1,18 +1,31 @@
+import React from 'react'
 import { CircularProgress } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useUser } from '../hooks/useUser'
+import { ErrorAlert } from './Alerts'
+import { AuthContext } from './AuthProvider'
 
 export const AuthGuard = (props) => {
 	const router = useRouter()
-	const [, isLoading, user] = useUser()
 	const { children } = props
+	const {
+		user,
+		error,
+		loading,
+	} = React.useContext(AuthContext)
+	const isClientSide = (typeof window !== 'undefined')
 
-	if (typeof window !== 'undefined' && !isLoading) {
+	if (loading) {
+		return <CircularProgress />
+	}
+
+	if (error) {
+		return <ErrorAlert>{error}</ErrorAlert>
+	}
+
+	if (isClientSide && !loading) {
 		if (!user && router.asPath !== '/login') {
 			router.push('/login')
-		}
-
-		if (
+		} else if (
 			user && (
 				router.asPath === '/' ||
 				router.asPath === '/login'
@@ -22,19 +35,5 @@ export const AuthGuard = (props) => {
 		}
 	}
 
-	return (
-		<>
-			{isLoading && <CircularProgress />}
-			{!isLoading &&
-				<>
-					{(
-						(!user && router.asPath === '/login') ||
-						(user && router.asPath !== '/login')
-					) &&
-						children
-					}
-				</>
-			}
-		</>
-	)
+	return children
 }

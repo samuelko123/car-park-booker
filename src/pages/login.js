@@ -12,10 +12,18 @@ import {
 	InfoAlert,
 } from '../components/Alerts'
 import { Stack } from '@mui/material'
+import { AuthContext } from '../components/AuthProvider'
 
 export default function Page() {
 	const router = useRouter()
 	const [errMsg, isLoading, sendRequest] = useAjaxRequest()
+	const { user } = React.useContext(AuthContext)
+
+	React.useEffect(() => {
+		if (!!user) {
+			router.push('/jobs')
+		}
+	}, [user, router])
 
 	const [username, setUsername] = React.useState('')
 	const [password, setPassword] = React.useState('')

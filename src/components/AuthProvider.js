@@ -1,16 +1,20 @@
-import React from 'react'
 import axios from 'axios'
+import React from 'react'
 import { HTTP_METHOD } from '../utils/constants'
 
-export const useUser = () => {
+export const AuthContext = React.createContext({})
+
+export const AuthProvider = (props) => {
+	const { children } = props
+
 	const [user, setUser] = React.useState(null)
-	const [errMsg, setErrMsg] = React.useState(null)
-	const [isLoading, setLoading] = React.useState(false)
+	const [error, setError] = React.useState(null)
+	const [loading, setLoading] = React.useState(true)
 
 	React.useEffect(() => {
 		async function sendRequest() {
 			try {
-				setErrMsg(null)
+				setError(null)
 				setLoading(true)
 				const request = {
 					url: '/api/session',
@@ -19,7 +23,7 @@ export const useUser = () => {
 				const res = await axios.request(request)
 				setUser(res.data)
 			} catch (err) {
-				setErrMsg(err)
+				setError(err)
 			} finally {
 				setLoading(false)
 			}
@@ -27,5 +31,15 @@ export const useUser = () => {
 		sendRequest()
 	}, [])
 
-	return [errMsg, isLoading, user]
+	return (
+		<AuthContext.Provider
+			value={{
+				user: user,
+				error: error,
+				loading: loading,
+			}}
+		>
+			{children}
+		</AuthContext.Provider>
+	)
 }

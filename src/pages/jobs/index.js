@@ -25,10 +25,11 @@ import {
 	BaseTextField,
 	ReadOnlyField,
 } from '../../components/TextFields'
-import { useUser } from '../../hooks/useUser'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { AuthContext } from '../../components/AuthProvider'
 
 export default function Page() {
+	const { user } = React.useContext(AuthContext)
 	const dates = [...Array(LIMIT.AVAILABLE_DAYS_IN_ADVANCE).keys()].map((index) => {
 		const momentObj = moment().add(index + 1, 'days')
 
@@ -61,12 +62,9 @@ export default function Page() {
 	const [isLicPlateMissing, setIsLicPlateMissing] = React.useState(false)
 	const [errMsg, isLoading, sendRequest] = useAjaxRequest()
 	const [fetchErrMsg, isFetching, sendFetchingRequest] = useAjaxRequest()
-	const [, isFetchingUser, user] = useUser()
 
 	React.useEffect(() => {
-		if (!!user?.lic_plate) {
-			setLicPlate(user.lic_plate)
-		}
+		setLicPlate(user?.lic_plate || '')
 	}, [user])
 
 	const handleLicPlateChange = (val) => {
@@ -145,7 +143,7 @@ export default function Page() {
 			<ReadOnlyField
 				fullWidth
 				label='username'
-				value={isFetchingUser ? 'Loading...' : (user?.username || '')}
+				value={user?.username || ''}
 				InputLabelProps={{ shrink: true }}
 			/>
 			<BaseTextField

@@ -10,31 +10,34 @@ import {
 } from '@mui/material'
 import { AppBar } from '../components/AppBar'
 import { AuthGuard } from '../components/AuthGuard'
+import { AuthProvider } from '../components/AuthProvider'
 
 export const AppWrapper = (props) => {
 	const { children } = props
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Head>
-				<title>{process.env.NEXT_PUBLIC_APP_TITLE}</title>
-				<link rel='icon' href='/favicon.ico' />
-			</Head>
-			<CssBaseline />
-			<AppBar title={process.env.NEXT_PUBLIC_APP_TITLE} />
-			<Stack
-				component='main'
-				gap={2}
-				p={2}
-				sx={{
-					maxWidth: 600,
-					margin: 'auto',
-				}}
-			>
-				<AuthGuard>
-					{children}
-				</AuthGuard>
-			</Stack>
+			<AuthProvider>
+				<Head>
+					<title>{process.env.NEXT_PUBLIC_APP_TITLE}</title>
+					<link rel='icon' href='/favicon.ico' />
+				</Head>
+				<CssBaseline />
+				<AppBar title={process.env.NEXT_PUBLIC_APP_TITLE} />
+				<Stack
+					component='main'
+					gap={2}
+					p={2}
+					sx={{
+						maxWidth: 600,
+						margin: 'auto',
+					}}
+				>
+					<AuthGuard>
+						{children}
+					</AuthGuard>
+				</Stack>
+			</AuthProvider>
 		</ThemeProvider>
 	)
 }
