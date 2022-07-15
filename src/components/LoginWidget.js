@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { BaseTextField } from '../components/TextFields'
-import { BaseButton } from '../components/Buttons'
+import { BaseTextField } from './TextFields'
+import { BaseButton } from './Buttons'
 import {
 	HTTP_METHOD,
 	UI_TEXT,
@@ -10,20 +10,12 @@ import { useAjaxRequest } from '../hooks/useAjaxRequest'
 import {
 	ErrorAlert,
 	InfoAlert,
-} from '../components/Alerts'
+} from './Alerts'
 import { Stack } from '@mui/material'
-import { AuthContext } from '../components/AuthProvider'
 
-export default function Page() {
+export const LoginWidget = () => {
 	const router = useRouter()
 	const [errMsg, isLoading, sendRequest] = useAjaxRequest()
-	const { user } = React.useContext(AuthContext)
-
-	React.useEffect(() => {
-		if (!!user) {
-			router.push('/jobs')
-		}
-	}, [user, router])
 
 	const [username, setUsername] = React.useState('')
 	const [password, setPassword] = React.useState('')

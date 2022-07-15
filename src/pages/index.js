@@ -1,8 +1,14 @@
 import React from 'react'
-import { CircularProgress } from '@mui/material'
+import { useRouter } from 'next/router'
+import { AuthContext } from '../components/AuthProvider'
 
 export default function Page() {
-	return (
-		<CircularProgress />
-	)
+	const router = useRouter()
+	const { user } = React.useContext(AuthContext)
+
+	React.useEffect(() => {
+		if (user) {
+			router.push('/jobs')
+		}
+	}, [user, router])
 }
