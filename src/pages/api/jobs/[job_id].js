@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 		}
 
 		if (req.method === HTTP_METHOD.GET) {
-			const logs = await LogDAO.get({ job_id: job_id }, null, null, { timestamp: -1 })
+			const logs = await LogDAO.get({ job_id: job_id }, null, null, { timestamp: 1 })
 
 			res.status(HTTP_STATUS.OK).json({
 				job: job,
