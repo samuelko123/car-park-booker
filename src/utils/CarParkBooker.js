@@ -66,6 +66,22 @@ export class CarParkBooker {
 		}
 	}
 
+	async read_bookings() {
+		const endpoint = '/UserPermit/Read?HistoricalItems=False'
+		const body = {
+			page: 1,
+			pageSize: 500,
+		}
+		const data = await this._http_post(endpoint, body)
+		return JSON.parse(data).Data.map(elem => {
+			return {
+				from_dt: elem.EffectiveFrom,
+				to_dt: elem.EffectiveTo,
+				car_park: 'BOT ' + elem.CarParkName.slice(-1),
+			}
+		})
+	}
+
 	async book_car_park(from_dt, to_dt, lic_plate) {
 		const form_data = await this._build_form_data(from_dt, to_dt, lic_plate)
 		const html_string = await this._submit_form(form_data)
