@@ -40,7 +40,7 @@ export default async function handler(req, res) {
 				},
 			}
 			const sort = { last_run_at: -1 }
-			const fields = ['from_dt', 'to_dt', 'status']
+			const fields = ['from_dt', 'to_dt', 'status', 'last_run_at']
 			const jobsPromise = JobDAO.get(filter, fields, null, sort)
 
 			// combine bookings and jobs
