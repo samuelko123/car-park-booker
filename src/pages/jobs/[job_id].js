@@ -14,7 +14,6 @@ import {
 import {
 	HTTP_METHOD,
 	HTTP_STATUS,
-	JOB_STATUS,
 	UI_TEXT,
 } from '../../utils/constants'
 import { ErrorAlert } from '../../components/Alerts'
@@ -71,15 +70,13 @@ export default function Page() {
 			{isFetching && <CircularProgress />}
 			{fetchErrMsg && <ErrorAlert>{fetchErrMsg}</ErrorAlert>}
 			{deleteErrMsg && <ErrorAlert>{deleteErrMsg}</ErrorAlert>}
-			{data?.job?.status === JOB_STATUS.ACTIVE &&
-				<DeleteButton
-					variant='outlined'
-					onClick={handleDelete}
-					loading={isDeleting}
-				>
-					{UI_TEXT.DELETE}
-				</DeleteButton>
-			}
+			<DeleteButton
+				variant='outlined'
+				onClick={handleDelete}
+				loading={isDeleting}
+			>
+				{UI_TEXT.DELETE}
+			</DeleteButton>
 			{data &&
 				<>
 					<Typography variant='h6'>Job</Typography>
@@ -89,7 +86,7 @@ export default function Page() {
 							width: '100%',
 						}}
 					>
-						{['_id', 'username', 'from_dt', 'to_dt', 'status', 'run_count', 'last_run_at', 'created_at'].map(field => {
+						{['_id', 'from_dt', 'to_dt', 'status', 'run_count', 'last_run_at', 'created_at'].map(field => {
 							let value = data?.job?.[field]
 							if (!value) {
 								return null
