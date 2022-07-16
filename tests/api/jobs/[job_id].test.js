@@ -5,10 +5,8 @@ import handler from '../../../src/pages/api/jobs/[job_id]'
 import { ApiHelper } from '../../../src/utils/ApiHelper'
 import {
 	DB,
-	ERROR,
 	HTTP_METHOD,
 	HTTP_STATUS,
-	JOB_STATUS,
 } from '../../../src/utils/constants'
 import { SEEDS } from '../../fixtures/seeds'
 
@@ -107,29 +105,6 @@ describe('DELETE /api/jobs/[job_id]', () => {
 			// Assert
 			expect(res.status).toBeCalledWith(HTTP_STATUS.OK)
 			expect(res.end).toBeCalledTimes(1)
-		})
-	})
-
-	describe('unhappy paths', () => {
-		test('job is not active', async () => {
-			// Arrange
-			const req = global.createMockReq(HTTP_METHOD.DELETE)
-			const res = global.createMockRes()
-			await global.seedDatabase(DB.JOBS)
-
-			const job = SEEDS[DB.JOBS].filter(job => job.status === JOB_STATUS.EXPIRED)[0]
-			req.query = { job_id: job._id }
-
-			ApiHelper.checkUser = jest.fn().mockReturnValue({
-				username: job.username,
-			})
-
-			// Action
-			await handler(req, res)
-
-			// Assert
-			expect(res.status).toBeCalledWith(HTTP_STATUS.BAD_REQUEST)
-			expect(res.send).toBeCalledWith(ERROR.CANNOT_DELETE_NON_ACTIVE_JOB)
 		})
 	})
 })

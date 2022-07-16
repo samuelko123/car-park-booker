@@ -1,15 +1,12 @@
 import {
 	ErrorHandler,
-	HttpBadRequestError,
 	HttpForbiddenError,
 	HttpNotFoundError,
 } from '../../../utils/ErrorHandler'
 import { ApiHelper } from '../../../utils/ApiHelper'
 import {
-	ERROR,
 	HTTP_METHOD,
 	HTTP_STATUS,
-	JOB_STATUS,
 } from '../../../utils/constants'
 import { JobDAO } from '../../../dao/JobDAO'
 import { LogDAO } from '../../../dao/LogDAO'
@@ -42,10 +39,6 @@ export default async function handler(req, res) {
 		}
 
 		if (req.method === HTTP_METHOD.DELETE) {
-			if (job.status !== JOB_STATUS.ACTIVE) {
-				throw new HttpBadRequestError(ERROR.CANNOT_DELETE_NON_ACTIVE_JOB)
-			}
-
 			await JobDAO.delete(job_id)
 			res.status(HTTP_STATUS.OK).end()
 		}
