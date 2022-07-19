@@ -21,12 +21,12 @@ export default async function handler(req, res) {
 			const {
 				username,
 				hash,
+				cookie,
 			} = user
 			const password = CryptoHelper.decrypt(hash)
 
 			// get confirmed bookings
-			const booker = new CarParkBooker()
-			await booker.login(username, password)
+			const booker = new CarParkBooker(username, password, cookie)
 			const bookingsPromise = booker.read_bookings()
 
 			// get jobs

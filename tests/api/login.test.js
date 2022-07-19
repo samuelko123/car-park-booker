@@ -42,12 +42,12 @@ describe('/api/login', () => {
 			const { db } = await MongoHelper.connectToDatabase()
 			await waitForExpect(async () => {
 				const user = await db.collection(DB.USERS).findOne({})
-				expect(user).toEqual({
+				expect(user).toEqual(expect.objectContaining({
 					_id: expect.any(ObjectId),
 					username: req.body.username,
 					hash: CryptoHelper.encrypt(req.body.password),
 					last_active_at: new Date(MOCK_DATE.NOW),
-				})
+				}))
 			})
 		})
 	})

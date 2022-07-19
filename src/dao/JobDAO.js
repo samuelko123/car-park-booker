@@ -42,6 +42,7 @@ export class JobDAO {
 					username: true,
 					hash: '$user.hash',
 					lic_plate: true,
+					cookie: true,
 				},
 			},
 			{

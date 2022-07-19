@@ -33,7 +33,7 @@ export class ApiHelper {
 		}
 
 		const filter = { username: decrypted.username }
-		const user = await UserDAO.getOne(filter, ['username', 'hash', 'lic_plate'])
+		const user = await UserDAO.getOne(filter, ['username', 'hash', 'lic_plate', 'cookie'])
 		if (!user) {
 			throw new HttpUnauthorizedError()
 		}

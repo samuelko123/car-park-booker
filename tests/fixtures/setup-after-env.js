@@ -39,6 +39,12 @@ beforeAll(async () => {
 		agent.post = jest.fn().mockReturnValue(agent)
 		agent.type = jest.fn().mockReturnValue(agent)
 		agent.send = jest.fn().mockReturnValue({ text: text })
+		agent.jar = {
+			getCookies: jest.fn().mockReturnValue({
+				toValueString: jest.fn(),
+			}),
+			setCookies: jest.fn(),
+		}
 		return agent
 	}
 

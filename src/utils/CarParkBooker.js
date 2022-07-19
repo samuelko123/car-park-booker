@@ -3,17 +3,28 @@ import * as htmlparser2 from 'htmlparser2'
 import moment from 'moment'
 import superagent from 'superagent'
 import prefix from 'superagent-prefix'
+import cookiejar from 'cookiejar'
 import {
 	CAR_PARK_ID,
 	ERROR,
 	STATE_ID,
 } from './constants'
 import { HttpUnauthorizedError } from './ErrorHandler'
+import { UserDAO } from '../dao/UserDAO'
 
 export class CarParkBooker {
-	constructor() {
+	constructor(username, password, cookie) {
+		this._username = username
+		this._password = password
+
 		this._agent = superagent.agent()
+		if (!!cookie) {
+			const cookie_list = cookie.split(';')
+			this._agent.jar.setCookies(cookie_list, this._domain, '/')
+		}
+
 		this._middleware = prefix(process.env.URL_PREFIX)
+		this._domain = process.env.URL_PREFIX.replace('https://', '').replace('/', '')
 	}
 
 	async _http_get(endpoint) {
@@ -22,7 +33,7 @@ export class CarParkBooker {
 			.get(endpoint)
 			.send()
 
-		return res.text
+		return res
 	}
 
 	async _http_post(endpoint, body) {
@@ -32,7 +43,7 @@ export class CarParkBooker {
 			.type('application/x-www-form-urlencoded')
 			.send(body)
 
-		return res.text
+		return res
 	}
 
 	_convert_str_to_doc(htmlString) {
@@ -43,27 +54,38 @@ export class CarParkBooker {
 
 	async _get_token() {
 		const endpoint = '/Account/Login'
-		const html_string = await this._http_get(endpoint)
+		const res = await this._http_get(endpoint)
+		const html_string = res.text
 		const $ = this._convert_str_to_doc(html_string)
 		const token = $('input[name=__RequestVerificationToken]').val()
 		return token
 	}
 
-	async login(username, password) {
+	async login() {
+		// get verification token
 		const token = await this._get_token()
+
+		// send login request
 		const endpoint = '/Account/Login'
 		const body = {
 			__RequestVerificationToken: token,
-			Email: username,
-			Password: password,
+			Email: this._username,
+			Password: this._password,
 		}
+		const res = await this._http_post(endpoint, body)
+		const html_string = res.text
 
-		const html_string = await this._http_post(endpoint, body)
+		// check login status
 		const $ = this._convert_str_to_doc(html_string)
 		const title = $('title').html()
-		if (title.startsWith('Login')) {
+		if (title.includes('Login')) {
 			throw new HttpUnauthorizedError(ERROR.INCORRECT_CREDENTIALS)
 		}
+
+		// return cookie
+		const access_info = new cookiejar.CookieAccessInfo(this._domain, '/', true, false)
+		const cookie_str = this._agent.jar.getCookies(access_info).toValueString()
+		return cookie_str
 	}
 
 	async read_bookings() {
@@ -72,7 +94,13 @@ export class CarParkBooker {
 			page: 1,
 			pageSize: 500,
 		}
-		const data = await this._http_post(endpoint, body)
+		let res = await this._http_post(endpoint, body)
+		if (!res.headers['content-type'].includes('application/json')) {
+			const cookie = await this.login()
+			UserDAO.update({ username: this._username }, { cookie: cookie })
+			res = await this._http_post(endpoint, body)
+		}
+		const data = res.text
 		return JSON.parse(data).Data.map(elem => {
 			return {
 				from_dt: elem.EffectiveFrom,
@@ -92,8 +120,16 @@ export class CarParkBooker {
 
 	async _build_form_data(from_str, to_str, lic_plate) {
 		const endpoint = '/BookNow'
-		const html_string = await this._http_get(endpoint)
-		const $ = this._convert_str_to_doc(html_string)
+		let res = await this._http_get(endpoint)
+		let html_string = res.text
+		let $ = this._convert_str_to_doc(html_string)
+		const title = $('title').html()
+		if (title.includes('Login')) {
+			await this.login()
+			res = await this._http_get(endpoint)
+			html_string = res.text
+			$ = this._convert_str_to_doc(html_string)
+		}
 
 		const form_data = {}
 		$(':input').each((_, elem) => {
@@ -135,13 +171,15 @@ export class CarParkBooker {
 		const endpoint = '/BookNow/Payment'
 
 		form_data['CarParkID'] = CAR_PARK_ID.BOT3
-		const html_string_1 = await this._http_post(endpoint, form_data)
+		const res1 = await this._http_post(endpoint, form_data)
+		const html_string_1 = res1.text
 		if (!this._get_error(html_string_1)) {
 			return html_string_1
 		}
 
 		form_data['CarParkID'] = CAR_PARK_ID.BOT9
-		const html_string_2 = await this._http_post(endpoint, form_data)
+		const res2 = await this._http_post(endpoint, form_data)
+		const html_string_2 = res2.text
 		const error = this._get_error(html_string_2)
 		if (!error) {
 			return html_string_2

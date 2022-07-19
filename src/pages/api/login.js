@@ -25,8 +25,8 @@ export default async function handler(req, res) {
 			const username = (data.username || '').toLowerCase()
 			const password = data.password
 
-			const booker = new CarParkBooker()
-			await booker.login(username, password)
+			const booker = new CarParkBooker(username, password)
+			const cookie = await booker.login()
 
 			// update user record
 			const hash = CryptoHelper.encrypt(password)
@@ -34,6 +34,7 @@ export default async function handler(req, res) {
 			UserDAO.upsert(filter, {
 				username: username,
 				hash: hash,
+				cookie: cookie,
 				last_active_at: new Date(Date.now()),
 			})
 

@@ -16,21 +16,31 @@ export class JobRunner {
 	static async run(job) {
 		let status
 
+		const {
+			_id: job_id,
+			username,
+			hash,
+			cookie,
+			from_dt,
+			to_dt,
+			lic_plate,
+			run_count,
+		} = job
+
 		try {
-			if (moment.utc(job.from_dt) <= moment().utcOffset(0, true)) {
+			if (moment.utc(from_dt) <= moment().utcOffset(0, true)) {
 				throw new ExpiredJobError()
 			}
 
-			const password = CryptoHelper.decrypt(job.hash)
-			const from_str = moment.utc(job.from_dt).format('YYYY-MM-DD HH:mm:ss', true)
-			const to_str = moment.utc(job.to_dt).format('YYYY-MM-DD HH:mm:ss', true)
+			const password = CryptoHelper.decrypt(hash)
+			const from_str = moment.utc(from_dt).format('YYYY-MM-DD HH:mm:ss', true)
+			const to_str = moment.utc(to_dt).format('YYYY-MM-DD HH:mm:ss', true)
 
-			const booker = new CarParkBooker()
-			await booker.login(job.username, password)
-			await booker.book_car_park(from_str, to_str, job.lic_plate)
+			const booker = new CarParkBooker(username, password, cookie)
+			await booker.book_car_park(from_str, to_str, lic_plate)
 			Logger.info({
 				message: UI_TEXT.BOOKING_SUCCESS,
-				job_id: job._id,
+				job_id: job_id,
 			})
 
 			status = JOB_STATUS.SUCCEEDED
@@ -38,14 +48,14 @@ export class JobRunner {
 			if (err instanceof NoBayError) {
 				Logger.info({
 					message: (err.message || '').trim(),
-					job_id: job._id,
+					job_id: job_id,
 				})
 
 				status = JOB_STATUS.ACTIVE
 			} else {
 				Logger.error({
 					message: (err?.response?.error?.message || err.message || '').trim(),
-					job_id: job._id,
+					job_id: job_id,
 				})
 
 				if (err instanceof ExpiredJobError) {
@@ -56,12 +66,12 @@ export class JobRunner {
 			}
 		} finally {
 			const data = {
-				run_count: job.run_count + 1,
+				run_count: run_count + 1,
 				last_run_at: new Date(),
 				status: status,
 			}
 
-			await JobDAO.updateById(job._id, data)
+			await JobDAO.updateById(job_id, data)
 		}
 	}
 }

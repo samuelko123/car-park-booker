@@ -12,10 +12,10 @@ describe('Car Park Booker', () => {
 			superagent.agent = jest.fn().mockImplementation(() => {
 				return global.createMockAgent(mock_html)
 			})
-			const booker = new CarParkBooker()
+			const booker = new CarParkBooker('test user', 'test password')
 
 			// Action
-			const fn = async () => await booker.login('test user', 'test password')
+			const fn = async () => await booker.login()
 
 			// Assert
 			await expect(fn).not.toThrow()
@@ -27,10 +27,10 @@ describe('Car Park Booker', () => {
 			superagent.agent = jest.fn().mockImplementation(() => {
 				return global.createMockAgent(mock_html)
 			})
-			const booker = new CarParkBooker()
+			const booker = new CarParkBooker('test user', 'test password')
 
 			// Action
-			const fn = async () => await booker.login('test user', 'test password')
+			const fn = async () => await booker.login()
 
 			// Assert
 			await expect(fn).rejects.toThrow(ERROR.INCORRECT_CREDENTIALS)
