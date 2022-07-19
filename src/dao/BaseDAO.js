@@ -69,7 +69,7 @@ export class BaseDAO {
 	}
 
 	static async updateById(id, data, options) {
-		const filter = { _id: id }
+		const filter = { _id: ObjectId(id) }
 		return await this.update(filter, data, options)
 	}
 
