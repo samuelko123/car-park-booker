@@ -206,7 +206,11 @@ export class CarParkBooker {
 
 export class NoBayError extends Error {
 	constructor(message) {
-		super(message)
+		if (message === 'No bays available, please try different dates') {
+			super('No bays available')
+		} else {
+			super(message)
+		}
 	}
 }
 
