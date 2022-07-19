@@ -9,6 +9,7 @@ export class UserDAO {
 	static getOneById = BaseDAO.getOneById
 	static get = BaseDAO.get
 	static update = BaseDAO.update
+	static updateById = BaseDAO.updateById
 	static upsert = BaseDAO.upsert
 	static delete = BaseDAO.delete
 

@@ -68,18 +68,21 @@ export class BaseDAO {
 		return count
 	}
 
-	static async update(id, data, options) {
+	static async updateById(id, data, options) {
+		const filter = { _id: id }
+		return await this.update(filter, data, options)
+	}
+
+	static async update(filter, data, options) {
 		const { db } = await MongoHelper.connectToDatabase()
 
 		const operation = { $set: data }
-		const query = { _id: ObjectId(id) }
-		return db.collection(this.collection_name).updateOne(query, operation, options)
+		return db.collection(this.collection_name).updateMany(filter, operation, options)
 	}
 
 	static async upsert(filter, data) {
-		const { db } = await MongoHelper.connectToDatabase()
 		const options = { upsert: true }
-		return await db.collection(this.collection_name).updateOne(filter, { $set: data }, options)
+		return await this.update(filter, data, options)
 	}
 
 	static async delete(id) {

@@ -13,6 +13,7 @@ export class JobDAO {
 	static get = BaseDAO.get
 	static getCount = BaseDAO.getCount
 	static update = BaseDAO.update
+	static updateById = BaseDAO.updateById
 	static delete = BaseDAO.delete
 
 	static async getActiveJobs(job_id) {

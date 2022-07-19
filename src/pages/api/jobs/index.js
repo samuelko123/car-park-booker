@@ -62,7 +62,7 @@ export default async function handler(req, res) {
 			} = data
 
 			// update user info
-			UserDAO.update(user._id, { lic_plate: lic_plate })
+			UserDAO.updateById(user._id, { lic_plate: lic_plate })
 
 			// check data
 			const from_dt = moment.utc(`${date} ${from_time}:00`, 'YYYY-MM-DD HH:mm:ss', true)

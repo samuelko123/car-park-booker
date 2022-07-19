@@ -40,7 +40,7 @@ describe('Job Runner', () => {
 				job_id: job._id,
 				message: UI_TEXT.BOOKING_SUCCESS,
 			})
-			expect(JobDAO.update).toBeCalledWith(
+			expect(JobDAO.updateById).toBeCalledWith(
 				job._id,
 				expect.objectContaining({ status: JOB_STATUS.SUCCEEDED }),
 			)
@@ -60,7 +60,7 @@ describe('Job Runner', () => {
 			await JobRunner.run(job)
 
 			// Assert
-			expect(JobDAO.update).toBeCalledWith(
+			expect(JobDAO.updateById).toBeCalledWith(
 				job._id,
 				expect.objectContaining({ status: JOB_STATUS.EXPIRED }),
 			)
@@ -84,7 +84,7 @@ describe('Job Runner', () => {
 			await JobRunner.run(job)
 
 			// Assert
-			expect(JobDAO.update).toBeCalledWith(
+			expect(JobDAO.updateById).toBeCalledWith(
 				job._id,
 				expect.objectContaining({ status: JOB_STATUS.ACTIVE }),
 			)
@@ -108,7 +108,7 @@ describe('Job Runner', () => {
 			await JobRunner.run(job)
 
 			// Assert
-			expect(JobDAO.update).toBeCalledWith(
+			expect(JobDAO.updateById).toBeCalledWith(
 				job._id,
 				expect.objectContaining({ status: JOB_STATUS.FAILED }),
 			)

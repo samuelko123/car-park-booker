@@ -61,7 +61,7 @@ export class JobRunner {
 				status: status,
 			}
 
-			await JobDAO.update(job._id, data)
+			await JobDAO.updateById(job._id, data)
 		}
 	}
 }
