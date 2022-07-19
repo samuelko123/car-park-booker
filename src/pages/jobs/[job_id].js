@@ -20,13 +20,15 @@ import { ErrorAlert } from '../../components/Alerts'
 import { useAjaxRequest } from '../../hooks/useAjaxRequest'
 import { LogList } from '../../components/lists/LogList'
 import moment from 'moment'
+import { DeleteDialog } from '../../components/Dialogs'
 
 export default function Page() {
 	const router = useRouter()
 	const { job_id } = router.query
 	const [fetchErrMsg, isFetching, sendFetchingRequest] = useAjaxRequest()
-	const [deleteErrMsg, isDeleting, sendDeleteRequest] = useAjaxRequest()
+	const [deleteErrMsg, , sendDeleteRequest] = useAjaxRequest()
 	const [data, setData] = React.useState(null)
+	const [openModal, setOpenModal] = React.useState(false)
 
 	const handleFetchData = React.useCallback(async () => {
 		setData(null)
@@ -70,13 +72,6 @@ export default function Page() {
 			{isFetching && <CircularProgress />}
 			{fetchErrMsg && <ErrorAlert>{fetchErrMsg}</ErrorAlert>}
 			{deleteErrMsg && <ErrorAlert>{deleteErrMsg}</ErrorAlert>}
-			<DeleteButton
-				variant='outlined'
-				onClick={handleDelete}
-				loading={isDeleting}
-			>
-				{UI_TEXT.DELETE}
-			</DeleteButton>
 			{data &&
 				<>
 					<Typography variant='h6'>Job</Typography>
@@ -86,6 +81,17 @@ export default function Page() {
 							width: '100%',
 						}}
 					>
+						<DeleteButton
+							variant='outlined'
+							onClick={() => { setOpenModal(true) }}
+						>
+							{UI_TEXT.DELETE}
+						</DeleteButton>
+						<DeleteDialog
+							open={openModal}
+							onConfirm={handleDelete}
+							handleClose={() => { setOpenModal(false) }}
+						/>
 						{['_id', 'from_dt', 'to_dt', 'status', 'run_count', 'last_run_at', 'created_at'].map(field => {
 							let value = data?.job?.[field]
 							if (!value) {

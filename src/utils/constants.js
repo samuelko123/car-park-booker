@@ -35,6 +35,7 @@ export const UI_TEXT = {
 	BACK: 'Back',
 	BOOK_NOW: 'Book Now',
 	BOOKING_SUCCESS: 'Booked successfully',
+	CANCEL: 'Cancel',
 	CREATE_JOB: 'Create Job',
 	DELETE: 'Delete',
 	LOGIN: 'Login',
