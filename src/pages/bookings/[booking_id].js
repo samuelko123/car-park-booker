@@ -32,12 +32,12 @@ export default function Page() {
 				</BackButton>
 			</BaseLink>
 			{error && <ErrorAlert>{error}</ErrorAlert>}
+			<Stack flexDirection='row' gap={2}>
+				<Typography variant='h6'>Booking</Typography>
+				{isValidating && <CircularProgress size='2rem' />}
+			</Stack>
 			{data &&
 				<>
-					<Stack flexDirection='row' gap={2}>
-						<Typography variant='h6'>Booking</Typography>
-						{isValidating && <CircularProgress size='2rem' />}
-					</Stack>
 					<Stack
 						gap={3}
 						sx={{ width: '100%' }}
