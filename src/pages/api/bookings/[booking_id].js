@@ -1,4 +1,7 @@
-import { ErrorHandler } from '../../../utils/ErrorHandler'
+import {
+	ErrorHandler,
+	HttpNotFoundError,
+} from '../../../utils/ErrorHandler'
 import { ApiHelper } from '../../../utils/ApiHelper'
 import {
 	HTTP_METHOD,
@@ -21,12 +24,16 @@ export default async function handler(req, res) {
 				username,
 				hash,
 				cookie,
+				lic_plate,
 			} = user
 			const password = CryptoHelper.decrypt(hash)
 
 			// get booking
 			const booker = new CarParkBooker(username, password, cookie)
 			const booking = await booker.read_booking_detail(booking_id)
+			if ((booking?.['Number Plate'] || '').toUpperCase() !== lic_plate.toUpperCase()) {
+				throw new HttpNotFoundError()
+			}
 
 			// return booking
 			res.status(HTTP_STATUS.OK).json(booking)

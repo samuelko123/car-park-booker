@@ -17,7 +17,19 @@ export default function Page() {
 	const router = useRouter()
 	const { booking_id } = router.query
 
-	const fetcher = url => axios.get(url).then(res => res.data)
+	const fetcher = url => {
+		return axios
+			.get(url)
+			.then(res => res.data)
+			.catch(err => {
+				if (err?.code === 'ERR_BAD_REQUEST') {
+					throw new Error('Not Found')
+				} else {
+					throw err
+				}
+			})
+	}
+
 	const {
 		data,
 		error,
@@ -31,11 +43,11 @@ export default function Page() {
 					{UI_TEXT.BACK}
 				</BackButton>
 			</BaseLink>
-			{error && <ErrorAlert>{error}</ErrorAlert>}
 			<Stack flexDirection='row' gap={2}>
 				<Typography variant='h6'>Booking</Typography>
 				{isValidating && <CircularProgress size='2rem' />}
 			</Stack>
+			{error && <ErrorAlert>{error?.message}</ErrorAlert>}
 			{data &&
 				<>
 					<Stack
