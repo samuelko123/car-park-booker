@@ -3,6 +3,7 @@ import { CircularProgress } from '@mui/material'
 import { ErrorAlert } from './Alerts'
 import { AuthContext } from './AuthProvider'
 import { LoginWidget } from './LoginWidget'
+import { ERROR } from '../utils/constants'
 
 export const AuthGuard = (props) => {
 	const { children } = props
@@ -19,7 +20,7 @@ export const AuthGuard = (props) => {
 	}
 
 	if (error) {
-		return <ErrorAlert>{error}</ErrorAlert>
+		return <ErrorAlert>{error?.message || ERROR.UNKNOWN}</ErrorAlert>
 	}
 
 	if (isClientSide && !loading && !user) {

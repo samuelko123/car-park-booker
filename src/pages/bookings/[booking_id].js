@@ -10,7 +10,10 @@ import {
 	Stack,
 	Typography,
 } from '@mui/material'
-import { UI_TEXT } from '../../utils/constants'
+import {
+	ERROR,
+	UI_TEXT,
+} from '../../utils/constants'
 import { ErrorAlert } from '../../components/Alerts'
 
 export default function Page() {
@@ -47,7 +50,7 @@ export default function Page() {
 				<Typography variant='h6'>Booking</Typography>
 				{isValidating && <CircularProgress size='2rem' />}
 			</Stack>
-			{error && <ErrorAlert>{error?.message}</ErrorAlert>}
+			{error && <ErrorAlert>{error?.message || ERROR.UNKNOWN}</ErrorAlert>}
 			{data &&
 				<>
 					<Stack

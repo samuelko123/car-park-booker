@@ -13,6 +13,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { DateList } from '../../components/lists/DateList'
 import { ErrorAlert } from '../../components/Alerts'
+import { ERROR } from '../../utils/constants'
 
 export default function Page() {
 	const fetcher = url => axios.get(url).then(res => res.data)
@@ -53,7 +54,7 @@ export default function Page() {
 					</Typography>
 				</AccordionDetails>
 			</Accordion>
-			{error && <ErrorAlert>{error}</ErrorAlert>}
+			{error && <ErrorAlert>{error?.message || ERROR.UNKNOWN}</ErrorAlert>}
 			<Stack flexDirection='row' gap={2}>
 				<Typography variant='h6'>Upcoming</Typography>
 				{isValidating && <CircularProgress size='2rem' />}
