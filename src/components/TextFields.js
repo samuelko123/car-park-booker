@@ -41,7 +41,6 @@ export const ReadOnlyField = (props) => {
 			value={value}
 			inputProps={{
 				readOnly: true,
-				disabled: true,
 			}}
 			{...textFieldProp}
 		/>
