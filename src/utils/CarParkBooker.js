@@ -103,11 +103,45 @@ export class CarParkBooker {
 		const data = res.text
 		return JSON.parse(data).Data.map(elem => {
 			return {
+				id: elem.ID,
 				from_dt: elem.EffectiveFrom,
 				to_dt: elem.EffectiveTo,
 				car_park: 'BOT ' + elem.CarParkName.slice(-1),
 			}
 		})
+	}
+
+	async read_booking_detail(booking_id) {
+		// get html
+		const endpoint = `/UserPermit/Edit?id=${booking_id}`
+		let res = await this._http_get(endpoint)
+		let html_string = res.text
+		let $ = this._convert_str_to_doc(html_string)
+
+		// login if necessary
+		const title = $('title').html()
+		if (title.includes('Login')) {
+			const cookie = await this.login()
+			UserDAO.update({ username: this._username }, { cookie: cookie })
+			res = await this._http_get(endpoint)
+			html_string = res.text
+			$ = this._convert_str_to_doc(html_string)
+		}
+
+		const obj = {}
+		$('.display-label').each((_, elem) => {
+			const key = $(elem).text().replace('\n', '').trim()
+			const value = $(elem).next().text().replace('\n', '').trim()
+
+			if (!!key) {
+				obj[key] = value
+			}
+		})
+
+		const token = $('input[name=__RequestVerificationToken]').val()
+		obj['token'] = token
+
+		return obj
 	}
 
 	async book_car_park(from_dt, to_dt, lic_plate) {

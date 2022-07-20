@@ -24,45 +24,52 @@ export const DateList = (props) => {
 	return (
 		<List>
 			<Divider />
-			{data.map((date, index) => (
-				<BaseListItem key={index}>
-					<BaseLink
-						href={!date.status ? `/jobs/create?date=${date.date}` : `/jobs/${date.job_id}`}
-						disabled={date.status === JOB_STATUS.SUCCEEDED}
-					>
-						<ListItemButton alignItems='flex-start'>
-							<ListItemText
-								primary={DateTimeHelper.convertToShortFormat(date.date)}
-								sx={{ flex: 1 }}
-							/>
-							{
-								date.status &&
-								<ListItemText
-									primary={
-										<Chip
-											size='small'
-											label={date.status === JOB_STATUS.SUCCEEDED ? date.car_park : date.status}
-											color={
-												date.status === JOB_STATUS.SUCCEEDED ? 'success' :
-													date.status === JOB_STATUS.FAILED ? 'error' :
-														date.status === JOB_STATUS.ACTIVE ? 'primary' :
-															undefined
+			{
+				data.map((date, index) => {
+					let url
+					if (date.status === JOB_STATUS.SUCCEEDED) {
+						url = `/bookings/${date.booking_id}`
+					} else if (!!date.status) {
+						url = `/jobs/${date.job_id}`
+					} else {
+						url = `/jobs/create?date=${date.date}`
+					}
+
+					return (
+						<BaseListItem key={index}>
+							<BaseLink href={url}>
+								<ListItemButton alignItems='flex-start'>
+									<ListItemText
+										primary={DateTimeHelper.convertToShortFormat(date.date)}
+										sx={{ flex: 1 }}
+									/>
+									{
+										date.status &&
+										<ListItemText
+											primary={
+												<Chip
+													size='small'
+													label={date.status === JOB_STATUS.SUCCEEDED ? date.car_park : date.status}
+													color={
+														date.status === JOB_STATUS.SUCCEEDED ? 'success' :
+															date.status === JOB_STATUS.FAILED ? 'error' :
+																date.status === JOB_STATUS.ACTIVE ? 'primary' :
+																	undefined
+													}
+												/>
 											}
+											sx={{ flex: 1 }}
 										/>
 									}
-									sx={{ flex: 1 }}
-								/>
-							}
-							<ArrowForwardIosIcon
-								sx={{
-									alignSelf: 'center',
-									visibility: date.status === JOB_STATUS.SUCCEEDED ? 'hidden' : 'visible',
-								}}
-							/>
-						</ListItemButton>
-					</BaseLink>
-				</BaseListItem>
-			))}
+									<ArrowForwardIosIcon
+										sx={{ alignSelf: 'center' }}
+									/>
+								</ListItemButton>
+							</BaseLink>
+						</BaseListItem>
+					)
+				})
+			}
 		</List>
 	)
 }

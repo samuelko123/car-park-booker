@@ -54,6 +54,7 @@ export default async function handler(req, res) {
 								date: date,
 								status: JOB_STATUS.SUCCEEDED,
 								car_park: booking.car_park,
+								booking_id: booking.id,
 							}
 						}
 					}
