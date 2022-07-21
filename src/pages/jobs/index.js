@@ -6,7 +6,6 @@ import {
 	AccordionDetails,
 	AccordionSummary,
 	CircularProgress,
-	Link,
 	Stack,
 	Typography,
 } from '@mui/material'
@@ -48,9 +47,6 @@ export default function Page() {
 					</Typography>
 					<Typography>
 						3.2. If the job failed, you can re-create the job to try again
-					</Typography>
-					<Typography>
-						4. [Optional] <Link target='_blank' href='https://www.buymeacoffee.com/samuelko'>Buy me a coffee</Link>
 					</Typography>
 				</AccordionDetails>
 			</Accordion>
