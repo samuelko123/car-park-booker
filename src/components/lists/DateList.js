@@ -55,7 +55,7 @@ export const DateList = (props) => {
 					else if (date.status === JOB_STATUS.ACTIVE) {
 						chipColor = 'primary'
 					} else {
-						chipColor = ''
+						chipColor = undefined
 					}
 
 					return (
