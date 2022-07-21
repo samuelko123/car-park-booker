@@ -7,6 +7,7 @@ import cookiejar from 'cookiejar'
 import {
 	CAR_PARK_ID,
 	ERROR,
+	HTTP_STATUS,
 	STATE_ID,
 } from './constants'
 import { HttpUnauthorizedError } from './ErrorHandler'
@@ -139,6 +140,43 @@ export class CarParkBooker {
 		})
 
 		return obj
+	}
+
+	async cancel_booking(booking_id) {
+		// get html
+		const endpoint = `/UserPermit/CancelPermit?id=${booking_id}`
+		let res = await this._http_get(endpoint)
+		let html_string = res.text
+		let $ = this._convert_str_to_doc(html_string)
+
+		// login if necessary
+		const title = $('title').text()
+		if (title.includes('Login')) {
+			const cookie = await this.login()
+			UserDAO.update({ username: this._username }, { cookie: cookie })
+			res = await this._http_get(endpoint)
+			html_string = res.text
+			$ = this._convert_str_to_doc(html_string)
+		}
+
+		// send cancel request
+		const token = $('input[name=__RequestVerificationToken]').val()
+		const body = {
+			__RequestVerificationToken: token,
+			UserPermitID: booking_id,
+			'X-Requested-With': 'XMLHttpRequest',
+		}
+
+		try {
+			await this._http_post(endpoint, body)
+		} catch (err) {
+			if (err?.status === HTTP_STATUS.SERVER_ERROR) {
+				// it sometimes give 500, but in fact operation succeeded
+				// therefore ignore it
+			} else {
+				throw err
+			}
+		}
 	}
 
 	async book_car_park(from_dt, to_dt, lic_plate) {

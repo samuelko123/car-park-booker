@@ -41,7 +41,7 @@ export const DeleteDialog = (props) => {
 			<DialogTitle>
 				{UI_TEXT.DELETE}
 			</DialogTitle>
-			{error && <ErrorAlert>{error}</ErrorAlert>}
+			{error && <ErrorAlert>{error?.message}</ErrorAlert>}
 			<DialogContent>
 				<DialogContentText>
 					Are you sure you want to delete?

@@ -2,7 +2,10 @@ import React from 'react'
 import axios from 'axios'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
-import { BackButton } from '../../components/Buttons'
+import {
+	BackButton,
+	DeleteButton,
+} from '../../components/Buttons'
 import { BaseLink } from '../../components/Link'
 import { ReadOnlyField } from '../../components/TextFields'
 import {
@@ -12,13 +15,32 @@ import {
 } from '@mui/material'
 import {
 	ERROR,
+	HTTP_METHOD,
+	HTTP_STATUS,
 	UI_TEXT,
 } from '../../utils/constants'
 import { ErrorAlert } from '../../components/Alerts'
+import { DeleteDialog } from '../../components/Dialogs'
+import { useAjaxRequest } from '../../hooks/useAjaxRequest'
 
 export default function Page() {
 	const router = useRouter()
 	const { booking_id } = router.query
+	const [openModal, setOpenModal] = React.useState(false)
+	const [deleteErrMsg, , sendDeleteRequest] = useAjaxRequest()
+
+	const handleDelete = async () => {
+		const request = {
+			url: `/api/bookings/${booking_id}`,
+			method: HTTP_METHOD.DELETE,
+		}
+
+		await sendDeleteRequest(request, (res) => {
+			if (res.status === HTTP_STATUS.OK) {
+				router.push('/jobs')
+			}
+		})
+	}
 
 	const fetcher = url => {
 		return axios
@@ -51,12 +73,24 @@ export default function Page() {
 				{isValidating && <CircularProgress size='2rem' />}
 			</Stack>
 			{error && <ErrorAlert>{error?.message || ERROR.UNKNOWN}</ErrorAlert>}
+			{deleteErrMsg && <ErrorAlert>{deleteErrMsg}</ErrorAlert>}
 			{data &&
 				<>
 					<Stack
 						gap={3}
 						sx={{ width: '100%' }}
 					>
+						<DeleteButton
+							variant='outlined'
+							onClick={() => { setOpenModal(true) }}
+						>
+							{UI_TEXT.DELETE}
+						</DeleteButton>
+						<DeleteDialog
+							open={openModal}
+							onConfirm={handleDelete}
+							handleClose={() => { setOpenModal(false) }}
+						/>
 						{Object.keys(data).map(field => {
 							return (
 								<ReadOnlyField
