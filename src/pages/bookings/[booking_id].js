@@ -58,10 +58,6 @@ export default function Page() {
 						sx={{ width: '100%' }}
 					>
 						{Object.keys(data).map(field => {
-							if (field === 'token') {
-								return null
-							}
-
 							return (
 								<ReadOnlyField
 									key={field}

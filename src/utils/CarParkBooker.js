@@ -138,9 +138,6 @@ export class CarParkBooker {
 			}
 		})
 
-		const token = $('input[name=__RequestVerificationToken]').val()
-		obj['token'] = token
-
 		return obj
 	}
 
