@@ -65,6 +65,7 @@ export default async function handler(req, res) {
 								date: date,
 								status: job.status,
 								job_id: job._id,
+								last_run_at: job.last_run_at,
 							}
 						}
 					}

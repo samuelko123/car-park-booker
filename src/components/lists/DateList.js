@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import {
 	Chip,
 	Divider,
@@ -35,6 +36,28 @@ export const DateList = (props) => {
 						url = `/jobs/create?date=${date.date}`
 					}
 
+					let chipText
+					if (date.status === JOB_STATUS.SUCCEEDED) {
+						chipText = date.car_park
+					} else if (date.status === JOB_STATUS.ACTIVE) {
+						chipText = `Last run: ${moment(date.last_run_at).format('DD/MM HH:mm')}`
+					} else {
+						chipText = date.status
+					}
+
+					let chipColor
+					if (date.status === JOB_STATUS.SUCCEEDED) {
+						chipColor = 'success'
+					}
+					else if (date.status === JOB_STATUS.FAILED) {
+						chipColor = 'error'
+					}
+					else if (date.status === JOB_STATUS.ACTIVE) {
+						chipColor = 'primary'
+					} else {
+						chipColor = ''
+					}
+
 					return (
 						<BaseListItem key={index}>
 							<BaseLink href={url}>
@@ -49,16 +72,11 @@ export const DateList = (props) => {
 											primary={
 												<Chip
 													size='small'
-													label={date.status === JOB_STATUS.SUCCEEDED ? date.car_park : date.status}
-													color={
-														date.status === JOB_STATUS.SUCCEEDED ? 'success' :
-															date.status === JOB_STATUS.FAILED ? 'error' :
-																date.status === JOB_STATUS.ACTIVE ? 'primary' :
-																	undefined
-													}
+													label={chipText}
+													color={chipColor}
 												/>
 											}
-											sx={{ flex: 1 }}
+											sx={{ flex: 1.5 }}
 										/>
 									}
 									<ArrowForwardIosIcon
