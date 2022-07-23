@@ -26,7 +26,14 @@ export const DateList = (props) => {
 		<List>
 			<Divider />
 			{
-				data.map((date, index) => {
+				data.map((date) => {
+					// hide past days
+					const now = moment()
+					const itemDate = moment(date.date)
+					if (itemDate.diff(now, 'days', true) < 0) {
+						return null
+					}
+
 					let url
 					if (date.status === JOB_STATUS.SUCCEEDED) {
 						url = `/bookings/${date.booking_id}`
@@ -59,32 +66,37 @@ export const DateList = (props) => {
 					}
 
 					return (
-						<BaseListItem key={index}>
-							<BaseLink href={url}>
-								<ListItemButton alignItems='flex-start'>
-									<ListItemText
-										primary={DateTimeHelper.convertToShortFormat(date.date)}
-										sx={{ flex: 1 }}
-									/>
-									{
-										date.status &&
+						<React.Fragment key={date.date}>
+							<BaseListItem>
+								<BaseLink href={url}>
+									<ListItemButton alignItems='flex-start'>
 										<ListItemText
-											primary={
-												<Chip
-													size='small'
-													label={chipText}
-													color={chipColor}
-												/>
-											}
-											sx={{ flex: 1.5 }}
+											primary={DateTimeHelper.convertToShortFormat(date.date)}
+											sx={{ flex: 1 }}
 										/>
-									}
-									<ArrowForwardIosIcon
-										sx={{ alignSelf: 'center' }}
-									/>
-								</ListItemButton>
-							</BaseLink>
-						</BaseListItem>
+										{
+											date.status &&
+											<ListItemText
+												primary={
+													<Chip
+														size='small'
+														label={chipText}
+														color={chipColor}
+													/>
+												}
+												sx={{ flex: 1.5 }}
+											/>
+										}
+										<ArrowForwardIosIcon
+											sx={{ alignSelf: 'center' }}
+										/>
+									</ListItemButton>
+								</BaseLink>
+							</BaseListItem>
+							{itemDate.weekday() === 5 &&
+								<Divider sx={{ borderWidth: 1 }} />
+							}
+						</React.Fragment>
 					)
 				})
 			}
